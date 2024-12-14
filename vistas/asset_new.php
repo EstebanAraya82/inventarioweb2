@@ -5,6 +5,7 @@
 <div class="container pb-6 pt-6">
 
 	<?php
+	include "./inc/btn_atras.php";
 	require_once "./php/main.php";
 	?>
 
@@ -153,11 +154,11 @@
 						<option value="" selected="">Seleccione una opción</option>
 						<?php
 						$estadoactivos = conexion();
-						$estadoactivos = $estadoactivos->query("SELECT * From activo");
+						$estadoactivos = $estadoactivos->query("SELECT * From estadoactivo");
 						if ($estadoactivos->rowCount() > 0) {
 							$estadoactivos = $estadoactivos->fetchAll();
 							foreach ($estadoactivos as $row) {
-								echo '<option value="' . $row['activo_estado'] . '" >' . $row['activo_estado'] . '</option>';
+								echo '<option value="' . $row['estadoactivo_id'] . '" >' . $row['estadoactivo_nombre'] . '</option>';
 							}
 						}
 						$estadoactivos = null;

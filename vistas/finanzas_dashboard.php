@@ -20,7 +20,7 @@ if (!isset($_SESSION['id']) || $_SESSION['rol_id'] == 1) {
 
 <body>
 
-    <!-- Barra de navegación -->
+     
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             <a class="navbar-item" href="index.php?vista=finanzas_dashboard">

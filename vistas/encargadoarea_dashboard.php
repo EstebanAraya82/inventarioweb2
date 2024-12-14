@@ -70,103 +70,18 @@ if (!isset($_SESSION['id']) || $_SESSION['rol_id'] == 1) {
                     <a class="navbar-item" href="index.php?vista=assetderegistration_search">Buscar solicitud</a>
                    </div>               
             </div>  
+            </div>  
             </div> 
-            </div> 
-            </div> 
+    </nav>
+
+    <a href="index.php?vista=logout" class="button is-link is-rounded">Salir</a>
     </nav>
 
     <!-- Contenido principal -->
     <div class="main-content">
-        <h3>Bienvenido, <?php echo $_SESSION['nombre'] . " " . $_SESSION['apellido']; ?></h3>
-        <p>Desde aquí puedes gestionar tus datos y consultar el inventario.</p>
-        
-        <!-- Opciones del usuario -->
-        <div class="dashboard-options">
-            <div class="option">
-                <a href="user_perfil.php"><i class="fas fa-user"></i> Ver Perfil</a>
-            </div>
-            <div class="option">
-                <a href="user_inventario.php"><i class="fas fa-box"></i> Consultar Inventario</a>
-            </div>
-        </div>
+        <h3 class="title is-3">Bienvenido, <?php echo $_SESSION['nombre'] . " " . $_SESSION['apellido']; ?></h3>
+        <p class="is-size-4">Desde aquí puedes revisar las solicitudes de baja de activos</p>
     </div>
 
-    <style>
-        /* Estilos básicos para el navbar */
-        .navbar {
-            background-color: #333;
-            padding: 15px;
-            color: white;
-        }
-
-        .navbar-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .navbar-left a {
-            font-size: 1.5em;
-            color: white;
-            text-decoration: none;
-        }
-
-        .navbar-right {
-            display: flex;
-        }
-
-        .navbar-menu {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-
-        .navbar-item {
-            margin-left: 20px;
-        }
-
-        .navbar-item a {
-            color: white;
-            text-decoration: none;
-            font-size: 1em;
-        }
-
-        .navbar-item a:hover {
-            text-decoration: underline;
-        }
-
-        .main-content {
-            padding: 20px;
-        }
-
-        .dashboard-options {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .option {
-            background-color: #f4f4f4;
-            border-radius: 5px;
-            margin: 10px 0;
-            padding: 15px;
-            text-align: center;
-        }
-
-        .option a {
-            color: #333;
-            font-size: 1.2em;
-            text-decoration: none;
-        }
-
-        .option a:hover {
-            text-decoration: underline;
-        }
-
-        /* Estilos para iconos */
-        .fas {
-            margin-right: 10px;
-        }
-    </style>
 </body>
 </html>
