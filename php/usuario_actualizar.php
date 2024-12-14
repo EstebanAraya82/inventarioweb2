@@ -29,15 +29,15 @@
    $usuario=limpiar_cadena($_POST['usuario_usuario']);
    $correo=limpiar_cadena($_POST['usuario_correo']);
    $clave_1=limpiar_cadena($_POST['usuario_clave_1']);
-   $clave_2=limpiar_cadena($_POST['usuario_clave_2']);
-   $rol=limpiar_cadena($_POST['usuario_rol']);
-   $estadousuario=limpiar_cadena($_POST['usuario_estado']);
+   $clave_2=limpiar_cadena($_POST['usuario_clave_2']);   
+   $usuarioestado=limpiar_cadena($_POST['usuario_estado']);
    $area=limpiar_cadena($_POST['usuario_area']);
+   $rol=limpiar_cadena($_POST['usuario_rol']);
    
 
 
     /* Verificando campos obligatorios del usuario */
-     if($nombre=="" || $apellido=="" || $usuario=="" || $estadousuario=="" || $area=""){
+     if($nombre=="" || $apellido=="" || $usuario=="" || $usuarioestado=="" || $area="" || $rol=""){
         echo '
             <div class="notification is-danger is-light">
                 <strong>¡Ocurrio un error inesperado!</strong><br>
@@ -166,10 +166,10 @@
     }
 
      /* Verificando estado */
-     if($estadousuario!=$datos['usuario_estado']){
-	    $check_estadousuario=conexion();
-	    $check_estadousuario=$check_estadousuario->query("SELECT usuario_estado FROM usuario WHERE usuario_estado='$estadousuario'");
-	    if($check_estado->rowCount()>0){
+     if($usuarioestado!=$datos['usuario_estado']){
+	    $check_usuarioestado=conexion();
+	    $check_usuarioestado=$check_usuarioestado->query("SELECT usuario_estado FROM usuario WHERE usuario_estado='$usuarioestado'");
+	    if($check_usuarioestado->rowCount()>0){
 	        echo '
 	            <div class="notification is-danger is-light">
 	                <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
@@ -178,7 +178,7 @@
 	        ';
 	        exit();
 	    }
-	    $check_estadousuario=null;
+	    $check_usuarioestado=null;
     }
 
    /* Verificando área */
@@ -189,7 +189,7 @@
 	        echo '
 	            <div class="notification is-danger is-light">
 	                <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
-	                El usuario ingresado ya se encuentra registrado, por favor elija otro
+	                El area ingresado ya se encuentra registrado, por favor elija otro
 	            </div>
 	        ';
 	        exit();
@@ -197,12 +197,28 @@
 	    $check_area=null;
     }
 
+     /* Verificando rol */
+     if($rol!=$datos['rol_id']){
+	    $check_rol=conexion();
+	    $check_rol=$check_rol->query("SELECT rol_id FROM rol WHERE rol_id='$rol'");
+	    if($check_rol->rowCount()>0){
+	        echo '
+	            <div class="notification is-danger is-light">
+	                <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
+	                El rol ingresado ya se encuentra registrado, por favor elija otro
+	            </div>
+	        ';
+	        exit();
+	    }
+	    $check_rol=null;
+    }
+
 
 
     /* Actualizar datos */
     $actualizar_usuario=conexion();
     $actualizar_usuario=$actualizar_usuario->prepare("UPDATE usuario SET usuario_nombre=:nombre,usuario_apellido=:apellido,
-    usuario_usuario=:usuario,usuario_correo=:correo,usuario_clave=:clave,usuario_estado=:estadousuario,usuario_estado=:estadousuario,area_id=area WHERE usuario_id=:id");
+    usuario_usuario=:usuario,usuario_correo=:correo,usuario_clave=:clave,usuario_estado=:usuarioestado,area_id=area,rol_id=rol WHERE usuario_id=:id");
 
     $marcadores=[
         ":nombre"=>$nombre,
@@ -210,9 +226,9 @@
         ":usuario"=>$usuario,
         ":correo"=>$correo,
         ":clave"=>$clave,
-        ":rol"=>$rol,
-        ":estadousuario"=>$estadousuario,
+        ":usuarioestado"=>$usuarioestado,
         ":area"=>$area,
+        ":rol"=>$rol,
         ":id"=>$id
     ];
 

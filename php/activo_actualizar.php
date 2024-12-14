@@ -28,8 +28,6 @@ $codigo = limpiar_cadena($_POST['activo_codigo']);
 $marca = limpiar_cadena($_POST['activo_marca']);
 $modelo = limpiar_cadena($_POST['activo_modelo']);
 $serial = limpiar_cadena($_POST['activo_serial']);
-$comentario = limpiar_cadena($_POST['activo_comentario']);
-$documento = limpiar_cadena($_POST['activo_documento']);
 $categoria = limpiar_cadena($_POST['activo_categoria']);
 $piso = limpiar_cadena($_POST['activo_piso']);
 $posicion = limpiar_cadena($_POST['activo_posicion']);
@@ -41,7 +39,7 @@ $estadoactivo = limpiar_cadena($_POST['activo_estado']);
 
 
 /* Verificando campos obligatorios */
-if ($codigo == "" || $marca == "" || $modelo == "" || $serial == "" || $comentario=="" || $documento=="" || $categoria == "" || $piso == "" || $posicion == "" || $area == "" || $sector == "" || $estadoactivo == "") {
+if ($codigo == "" || $marca == "" || $modelo == "" || $serial == "" | $categoria == "" || $piso == "" || $posicion == "" || $area == "" || $sector == "" || $estadoactivo == "") {
     echo '
             <div class="notification is-danger is-light">
                 <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
@@ -93,55 +91,7 @@ if (verificar_datos("[a-zA-Z0-9]{3,50}", $serial)) {
     exit();
 }
 
-if (verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,50}", $categoria)) {
-    echo '
-                <div class="notification is-danger is-light">
-                    <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
-                    La categoria no coincide con el formato solicitado
-                </div>
-            ';
-    exit();
-}
 
-if (verificar_datos("[a-zA-Z0-9-]{1,50}", $piso)) {
-    echo '
-                <div class="notification is-danger is-light">
-                     <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
-                    El piso no coincide con el formato solicitado
-                </div>
-            ';
-    exit();
-}
-
-if (verificar_datos("[a-zA-Z0-9-]{2,50}", $posicion)) {
-    echo '
-                <div class="notification is-danger is-light">
-                     <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
-                     La posición no coincide con el formato solicitado
-                </div>
-            ';
-    exit();
-}
-
-if (verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ]{2,50}", $area)) {
-    echo '
-                <div class="notification is-danger is-light">
-                     <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
-                    La área no coincide con el formato solicitado
-                </div>
-            ';
-    exit();
-}
-
-if (verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{2,50}", $sector)) {
-    echo '
-                <div class="notification is-danger is-light">
-                     <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
-                      El sector no coincide con el formato solicitado
-                 </div>
-            ';
-    exit();
-}
 
 if (verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{2,50}", $estadoactivo)) {
     echo '
@@ -153,22 +103,6 @@ if (verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{2,50}", $estadoactivo)) {
     exit();
 }
 
-
-/* Verificando codigo */
-if ($activo != $datos['activo_codigo']) {
-    $check_codigo = conexion();
-    $check_codigo = $check_codigo->query("SELECT activo_codigo FROM activo WHERE activo_codigo='$codigo'");
-    if ($check_codigo->rowCount() > 0) {
-        echo '
-	            <div class="notification is-danger is-light">
-	                <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
-	                El codigo ingresado ya se encuentra registrado, por favor elija otro
-	            </div>
-	        ';
-        exit();
-    }
-    $check_codigo = null;
-}
 
 /* Verificando categoria */
 if ($categoria != $datos['categoria_id']) {
@@ -251,9 +185,9 @@ if ($sector != $datos['sector_id']) {
 }
 
 /* Verificando estado activo */
-if ($estadoactivo != $estadoactivo['estadoactivo_id']) {
+if ($estadoactivo != $datos['activo_estado']) {
     $check_estadoactivo = conexion();
-    $check_estadoactivo = $check_estadoactivo->query("SELECT estadoactivo_id FROM estadoactivo WHERE estadoactivo_id='$estadoactivo'");
+    $check_estadoactivo = $check_estadoactivo->query("SELECT activo_estado FROM activo WHERE activo_estado='$estadoactivo'");
     if ($check_estadoactivo->rowCount() <= 0) {
         echo '
 	            <div class="notification is-danger is-light">
@@ -272,16 +206,14 @@ if ($estadoactivo != $estadoactivo['estadoactivo_id']) {
 
 /* Actualizando datos */
 $actualizar_activo = conexion();
-$actualizar_activo = $actualizar_activo->prepare("UPDATE activo SET activo_codigo=:codigo,activo_marca=:marca,activo_modelo=:modelo,activo_serial=:serial,activo_comentario=:comentario,activo_documento=:documento,activo_categoria=:categoria
-    activo_piso=:piso,activo_posicion=:posicion,activo_area=:area,activo_sector=:sector,activo_estadoactivo=:estadoactivo WHERE activo_id=:id");
+$actualizar_activo = $actualizar_activo->prepare("UPDATE activo SET activo_codigo=:codigo,activo_marca=:marca,activo_modelo=:modelo,activo_serial=:serial,activo_categoria=:categoria
+    activo_piso=:piso,activo_posicion=:posicion,activo_area=:area,activo_sector=:sector,activo_estado=:estadoactivo WHERE activo_id=:id");
 
 $marcadores = [
     ":codigo" => $codigo,
     ":marca" => $marca,
     ":modelo" => $modelo,
     ":serial" => $serial,
-    ":comentario" => $comentario,
-    ":documento" => $documento,
     ":categoria" => $categoria,
     ":piso" => $piso,
     ":posicion" => $posicion,
@@ -289,6 +221,7 @@ $marcadores = [
     ":sector" => $sector,
     ":estadoactivo" => $estadoactivo,
     ":id" => $id
+       
 ];
 
 

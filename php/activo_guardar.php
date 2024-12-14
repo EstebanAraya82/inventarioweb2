@@ -13,7 +13,7 @@ $piso=limpiar_cadena($_POST['activo_piso']);
 $posicion=limpiar_cadena($_POST['activo_posicion']);
 $area=limpiar_cadena($_POST['activo_area']);
 $sector=limpiar_cadena($_POST['activo_sector']);
-$estadoactivo=limpiar_cadena($_POST['activo_estado']);
+$estadoactivo=limpiar_cadena($_POST['activo_estadoactivo']);
 $fecha=limpiar_cadena($_POST['fecha_ingreso']);
 
 
@@ -173,7 +173,7 @@ $check_sector=null;
 
 /*verificar estado activo */
 $check_estadoactivo=conexion();
-$check_estadoactivo=$check_estadoactivo->query("SELECT activo_estado From activo where activo_estado='$estadoactivo'");
+$check_estadoactivo=$check_estadoactivo->query("SELECT estadoactivo_id From estadoactivo where estadoactivo_id='$estadoactivo'");
 if($check_estadoactivo->rowCount()<=0){
   echo'
   <div class="notification is-danger is-light">
@@ -205,7 +205,7 @@ $check_fecha=null;
   	/* Guardando datos */
     $guardar_activo=conexion();
     $guardar_activo=$guardar_activo->prepare("INSERT INTO activo (activo_codigo,activo_marca,activo_modelo,activo_serial,
-    categoria_id,piso_id,posicion_id,area_id,sector_id,activo_estado,fecha_ingreso) VALUES(:codigo,:marca,:modelo,:serial,:categoria,:piso,:posicion,:area,:sector,:estadoactivo,:fecha)");
+    categoria_id,piso_id,posicion_id,area_id,sector_id,estadoactivo_id,fecha_ingreso) VALUES(:codigo,:marca,:modelo,:serial,:categoria,:piso,:posicion,:area,:sector,:estadoactivo,:fecha)");
 
     $marcadores=[
         ":codigo"=>$codigo,

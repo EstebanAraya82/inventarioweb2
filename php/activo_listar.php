@@ -2,57 +2,114 @@
 $inicio = ($pagina > 0) ? (($pagina * $registros) - $registros) : 0;
 $tabla = "";
 
-$campos="activo.activo_id,activo.activo_codigo,activo.activo_marca,activo.activo_modelo,activo.activo_serial,activo.categoria_id,activo.piso_id,activo.posicion_id,activo.area_id,activo.sector_id,activo.activo_estado,categoria.categoria_id,categoria.categoria_nombre,piso.piso_id,
-    piso.piso_numero,posicion.posicion_id,posicion.posicion_posicion,area.area_id,area.area_nombre,sector.sector_id,sector.sector_nombre,activo.fecha_ingreso";
+$campos = "activo.activo_id,activo.activo_codigo,activo.activo_marca,activo.activo_modelo,activo.activo_serial,activo.categoria_id,activo.piso_id,activo.posicion_id,activo.area_id,activo.sector_id,activo.estadoactivo_id,categoria.categoria_id,categoria.categoria_nombre,piso.piso_id,
+    piso.piso_numero,posicion.posicion_id,posicion.posicion_posicion,area.area_id,area.area_nombre,sector.sector_id,sector.sector_nombre,estadoactivo.estadoactivo_id,estadoactivo.estadoactivo_nombre,activo.fecha_ingreso";
 
 if (isset($busqueda) && $busqueda != "") {
-	$consulta_datos = "SELECT $campos FROM activo INNER JOIN categoria On activo.categoria_id=categoria.categoria_id INNER JOIN piso On activo.piso_id=piso.piso_id INNER JOIN posicion On activo.posicion_id=posicion.posicion_id
-					INNER JOIN area On activo.area_id=area.area_id INNER JOIN sector ON activo.sector_id=sector.sector_id where activo.activo_codigo Like '$busqueda%' Or activo.activo_marca Like '%$busqueda%' Or activo.activo_modelo Like '%$busqueda%' 
-					Or activo.activo_serial Like '%$busqueda%' Order By activo.activo_codigo Asc Limit $inicio,$registros";
+	$consulta_datos = "SELECT $campos FROM activo 
+	INNER JOIN categoria On activo.categoria_id=categoria.categoria_id 
+	INNER JOIN piso On activo.piso_id=piso.piso_id 
+	INNER JOIN posicion On activo.posicion_id=posicion.posicion_id
+	INNER JOIN area On activo.area_id=area.area_id 
+	INNER JOIN sector ON activo.sector_id=sector.sector_id 
+	INNER JOIN estadoactivo ON activo.estadoactivo_id=estadoactivo.estadoactivo_id 
+	where activo.activo_codigo Like '$busqueda%' 
+	Or activo.activo_marca Like '%$busqueda%' 
+	Or activo.activo_modelo Like '%$busqueda%' 
+	Or activo.activo_serial Like '%$busqueda%'
+	Order By activo.activo_codigo Asc Limit $inicio,$registros";
 
 	$consulta_total = "SELECT COUNT(activo_id) FROM activo where activo_codigo Like '%$busqueda%' Or activo_serial Like '%$busqueda%'";
-
 } elseif ($categoria_id > 0) {
 
-	$consulta_datos = "SELECT $campos FROM activo INNER JOIN categoria ON activo.categoria_id=categoria.categoria_id INNER JOIN piso On activo.piso_id=piso.piso_id INNER JOIN posicion On activo.posicion_id=posicion.posicion_id
-					INNER JOIN area On activo.area_id=area.area_id INNER JOIN sector ON activo.sector_id=sector.sector_id WHERE activo.categoria_id='$categoria_id' ORDER BY activo.activo_codigo ASC LIMIT $inicio,$registros";
+	$consulta_datos = "SELECT $campos FROM activo 
+	INNER JOIN categoria ON activo.categoria_id=categoria.categoria_id 
+	INNER JOIN piso On activo.piso_id=piso.piso_id 
+	INNER JOIN posicion On activo.posicion_id=posicion.posicion_id
+	INNER JOIN area On activo.area_id=area.area_id 
+	INNER JOIN sector ON activo.sector_id=sector.sector_id 
+	INNER JOIN estadoactivo ON activo.estadoactivo_id=estadoactivo.estadoactivo_id 
+	WHERE activo.categoria_id='$categoria_id' 
+	ORDER BY activo.activo_codigo ASC LIMIT $inicio,$registros";
 
 	$consulta_total = "SELECT COUNT(activo_id) FROM activo WHERE categoria_id='$categoria_id'";
-
 } elseif ($sector_id > 0) {
 
-	$consulta_datos = "SELECT $campos FROM activo INNER JOIN categoria ON activo.categoria_id=categoria.categoria_id INNER JOIN piso On activo.piso_id=piso.piso_id INNER JOIN posicion On activo.posicion_id=posicion.posicion_id
-					INNER JOIN area On activo.area_id=area.area_id INNER JOIN sector ON activo.sector_id=sector.sector_id WHERE activo.sector_id='$sector_id' ORDER BY activo.activo_codigo ASC LIMIT $inicio,$registros";
+	$consulta_datos = "SELECT $campos FROM activo 
+	INNER JOIN categoria ON activo.categoria_id=categoria.categoria_id 
+	INNER JOIN piso On activo.piso_id=piso.piso_id 
+	INNER JOIN posicion On activo.posicion_id=posicion.posicion_id
+	INNER JOIN area On activo.area_id=area.area_id 
+	INNER JOIN sector ON activo.sector_id=sector.sector_id 
+	INNER JOIN estadoactivo ON activo.estadoactivo_id=estadoactivo.estadoactivo_id 
+	WHERE activo.sector_id='$sector_id' 
+	ORDER BY activo.activo_codigo ASC LIMIT $inicio,$registros";
 
 	$consulta_total = "SELECT COUNT(activo_id) FROM activo WHERE sector_id='$sector_id'";
-
 } elseif ($area_id > 0) {
 
-	$consulta_datos = "SELECT $campos FROM activo INNER JOIN categoria ON activo.categoria_id=categoria.categoria_id INNER JOIN piso On activo.piso_id=piso.piso_id INNER JOIN posicion On activo.posicion_id=posicion.posicion_id
-					INNER JOIN area On activo.area_id=area.area_id INNER JOIN sector ON activo.sector_id=sector.sector_id WHERE activo.area_id='$area_id' ORDER BY activo.activo_codigo ASC LIMIT $inicio,$registros";
+	$consulta_datos = "SELECT $campos FROM activo 
+	INNER JOIN categoria ON activo.categoria_id=categoria.categoria_id 
+	INNER JOIN piso On activo.piso_id=piso.piso_id 
+	INNER JOIN posicion On activo.posicion_id=posicion.posicion_id
+	INNER JOIN area On activo.area_id=area.area_id 
+	INNER JOIN sector ON activo.sector_id=sector.sector_id 
+	INNER JOIN estadoactivo ON activo.estadoactivo_id=estadoactivo.estadoactivo_id 
+	WHERE activo.area_id='$area_id' 
+	ORDER BY activo.activo_codigo ASC LIMIT $inicio,$registros";
 
 	$consulta_total = "SELECT COUNT(activo_id) FROM activo WHERE area_id='$area_id'";
-
 } elseif ($posicion_id > 0) {
 
-	$consulta_datos = "SELECT $campos FROM activo INNER JOIN categoria ON activo.categoria_id=categoria.categoria_id INNER JOIN piso On activo.piso_id=piso.piso_id INNER JOIN posicion On activo.posicion_id=posicion.posicion_id
-					INNER JOIN area On activo.area_id=area.area_id INNER JOIN sector ON activo.sector_id=sector.sector_id WHERE activo.posicion_id='$posicion_id' ORDER BY activo.activo_codigo ASC LIMIT $inicio,$registros";
+	$consulta_datos = "SELECT $campos FROM activo 
+	INNER JOIN categoria ON activo.categoria_id=categoria.categoria_id 
+	INNER JOIN piso On activo.piso_id=piso.piso_id 
+	INNER JOIN posicion On activo.posicion_id=posicion.posicion_id
+	INNER JOIN area On activo.area_id=area.area_id 
+	INNER JOIN sector ON activo.sector_id=sector.sector_id 
+	INNER JOIN estadoactivo ON activo.estadoactivo_id=estadoactivo.estadoactivo_id 
+	WHERE activo.posicion_id='$posicion_id' 
+	ORDER BY activo.activo_codigo ASC LIMIT $inicio,$registros";
 
 	$consulta_total = "SELECT COUNT(activo_id) FROM activo WHERE posicion_id='$posicion_id'";
-
 } elseif ($piso_id > 0) {
 
-	$consulta_datos = "SELECT $campos FROM activo INNER JOIN piso On activo.piso_id=piso.piso_id INNER JOIN categoria ON activo.categoria_id=categoria.categoria_id INNER JOIN posicion On activo.posicion_id=posicion.posicion_id
-					INNER JOIN area On activo.area_id=area.area_id INNER JOIN sector ON activo.piso_id=piso.piso_id WHERE activo.piso_id='$piso_id' ORDER BY activo.activo_codigo ASC LIMIT $inicio,$registros";
+	$consulta_datos = "SELECT $campos FROM activo 
+	INNER JOIN piso On activo.piso_id=piso.piso_id 
+	INNER JOIN categoria ON activo.categoria_id=categoria.categoria_id 
+	INNER JOIN posicion On activo.posicion_id=posicion.posicion_id
+	INNER JOIN area On activo.area_id=area.area_id 
+	INNER JOIN sector ON activo.sector_id=sector.sector_id 
+	INNER JOIN estadoactivo ON activo.estadoactivo_id=estadoactivo.estadoactivo_id 
+	WHERE activo.piso_id='$piso_id' 
+	ORDER BY activo.activo_codigo ASC LIMIT $inicio,$registros";
 
 	$consulta_total = "SELECT COUNT(activo_id) FROM activo WHERE piso_id='$piso_id'";
+} elseif ($estadoactivo_id > 0) {
 
-}else{
+	$consulta_datos = "SELECT $campos FROM activo
+	INNER JOIN piso On activo.piso_id=piso.piso_id 
+	INNER JOIN categoria ON activo.categoria_id=categoria.categoria_id 
+	INNER JOIN posicion On activo.posicion_id=posicion.posicion_id
+	INNER JOIN area On activo.area_id=area.area_id 
+	INNER JOIN sector ON activo.sector_id=sector.sector_id 
+	INNER JOIN estadoactivo ON activo.estadoactivo_id=estadoactivo.estadoactivo_id 
+	WHERE activo.estadoactivo_id='$estadoactivo_id' 
+	ORDER BY activo.activo_codigo ASC LIMIT $inicio,$registros";
 
-	$consulta_datos="SELECT $campos FROM activo INNER JOIN categoria ON activo.categoria_id=categoria.categoria_id INNER JOIN piso On activo.piso_id=piso.piso_id INNER JOIN posicion On activo.posicion_id=posicion.posicion_id
-                INNER JOIN area On activo.area_id=area.area_id INNER JOIN sector ON activo.sector_id=sector.sector_id Order By activo.activo_codigo Asc Limit $inicio,$registros";
+	$consulta_total = "SELECT COUNT(activo_id) FROM activo WHERE estadoactivo_id='$estadoactivo_id'";
+} else {
 
-		$consulta_total="SELECT COUNT(activo_id) FROM activo";
+	$consulta_datos = "SELECT $campos FROM activo 
+	INNER JOIN categoria ON activo.categoria_id=categoria.categoria_id 
+	INNER JOIN piso On activo.piso_id=piso.piso_id 
+	INNER JOIN posicion On activo.posicion_id=posicion.posicion_id
+    INNER JOIN area On activo.area_id=area.area_id 
+	INNER JOIN sector ON activo.sector_id=sector.sector_id 
+	INNER JOIN estadoactivo ON activo.estadoactivo_id=estadoactivo.estadoactivo_id 
+	Order By activo.activo_codigo Asc Limit $inicio,$registros";
+
+	$consulta_total = "SELECT COUNT(activo_id) FROM activo";
 }
 
 $conexion = conexion();
@@ -104,7 +161,7 @@ if ($total >= 1 && $pagina <= $Npaginas) {
 					<td>' . $rows['posicion_posicion'] . '</td>
 					<td>' . $rows['area_nombre'] . '</td>
 					<td>' . $rows['sector_nombre'] . '</td>
-					<td>' . $rows['activo_estado'] . '</td>
+					<td>' . $rows['estadoactivo_nombre'] . '</td>
 					<td>' . $rows['fecha_ingreso'] . '</td>
 					<td>
 					<a href="index.php?vista=asset_update&asset_id_up=' . $rows['activo_id'] . '" class="button is-success is-rounded is-small">Actualizar</a>
