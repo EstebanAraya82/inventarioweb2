@@ -8,19 +8,22 @@ $campos =
  usuario.usuario_apellido,
  usuario.usuario_usuario,
  usuario.usuario_correo,
- usuario.usuario_estado,
  usuario.rol_id,
  usuario.area_id,
+ usuario.estadousuario_id,
  rol.rol_id,
  rol.rol_nombre,
  area.area_id,
- area.area_nombre";
+ area.area_nombre,
+ estadousuario.estadousuario_id,
+ estadousuario.estadousuario_nombre";
 
 if (isset($busqueda) && $busqueda != "") {
 
 	$consulta_datos = "SELECT $campos FROM usuario 
 	INNER JOIN area ON usuario.area_id=area.area_id 
 	INNER JOIN rol ON usuario.rol_id=rol.rol_id
+	INNER JOIN estadousuario ON usuario.estadousuario_id=estadousuario.estadousuario_id
 	WHERE usuario.usuario_nombre LIKE '%$busqueda%' 
 	OR usuario.usuario_apellido LIKE '%$busqueda%' 
 	OR usuario.usuario_correo LIKE '%$busqueda%' 
@@ -34,6 +37,7 @@ if (isset($busqueda) && $busqueda != "") {
 	$consulta_datos = "SELECT $campos FROM usuario 
 	INNER JOIN area ON usuario.area_id=area.area_id 
 	INNER JOIN rol ON usuario.rol_id=rol.rol_id 
+	INNER JOIN estadousuario ON usuario.estadousuario_id=estadousuario.estadousuario_id
 	WHERE usuario.area_id='$area_id' 
 	ORDER BY usuario.usuario_usuario ASC LIMIT $inicio,$registros";
 
@@ -44,16 +48,29 @@ if (isset($busqueda) && $busqueda != "") {
 	$consulta_datos = "SELECT $campos FROM usuario 
 	INNER JOIN area ON usuario.area_id=area.area_id 
 	INNER JOIN rol ON usuario.rol_id=rol.rol_id 
+	INNER JOIN estadousuario ON usuario.estadousuario_id=estadousuario.estadousuario_id
 	WHERE usuario.rol_id='$rol_id' 
 	ORDER BY usuario.usuario_usuario ASC LIMIT $inicio,$registros";
 
 	$consulta_total = "SELECT COUNT(usuario_id) FROM usuario WHERE rol_id='$rol_id'";
+
+} elseif ($estadousuario_id > 0) {
+
+	$consulta_datos = "SELECT $campos FROM usuario 
+	INNER JOIN area ON usuario.area_id=area.area_id 
+	INNER JOIN rol ON usuario.rol_id=rol.rol_id 
+	INNER JOIN estadousuario ON usuario.estadousuario_id=estadousuario.estadousuario_id
+	WHERE usuario.estadousuario_id='$estadousuario_id' 
+	ORDER BY usuario.usuario_usuario ASC LIMIT $inicio,$registros";
+
+	$consulta_total = "SELECT COUNT(usuario_id) FROM usuario WHERE estadousuario_id='$estadousuario_id'";
 
 } else {
 
 	$consulta_datos = "SELECT $campos FROM usuario 
 	INNER JOIN area ON usuario.area_id=area.area_id 
 	INNER JOIN rol ON usuario.rol_id=rol.rol_id 
+	INNER JOIN estadousuario ON usuario.estadousuario_id=estadousuario.estadousuario_id
 	ORDER BY usuario.usuario_usuario ASC LIMIT $inicio,$registros";
 
 	$consulta_total = "SELECT COUNT(usuario_id) FROM usuario";
@@ -82,7 +99,6 @@ $tabla .= '
                     <th>Estado</th>
                     <th>Área</th>
 					<th>Rol</th>
-					<th colspan="2">Opciones</th>
 					</tr>
             </thead>
             <tbody>
@@ -99,7 +115,7 @@ if ($total >= 1 && $pagina <= $Npaginas) {
                     <td>' . $rows['usuario_apellido'] . '</td>
                     <td>' . $rows['usuario_usuario'] . '</td>
 					<td>' . $rows['usuario_correo'] . '</td>
-					<td>' . $rows['usuario_estado'] . '</td>
+					<td>' . $rows['estadousuario_nombre'] . '</td>
                     <td>' . $rows['area_nombre'] . '</td>
 					<td>' . $rows['rol_nombre'] . '</td>
 					<td>

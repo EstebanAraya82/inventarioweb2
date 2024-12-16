@@ -2,8 +2,31 @@
 $inicio = ($pagina > 0) ? (($pagina * $registros) - $registros) : 0;
 $tabla = "";
 
-$campos = "activo.activo_id,activo.activo_codigo,activo.activo_marca,activo.activo_modelo,activo.activo_serial,activo.categoria_id,activo.piso_id,activo.posicion_id,activo.area_id,activo.sector_id,activo.estadoactivo_id,categoria.categoria_id,categoria.categoria_nombre,piso.piso_id,
-    piso.piso_numero,posicion.posicion_id,posicion.posicion_posicion,area.area_id,area.area_nombre,sector.sector_id,sector.sector_nombre,estadoactivo.estadoactivo_id,estadoactivo.estadoactivo_nombre,activo.fecha_ingreso";
+$campos = 
+"activo.activo_id,
+activo.activo_codigo,
+activo.activo_marca,
+activo.activo_modelo,
+activo.activo_serial,
+activo.categoria_id,
+activo.piso_id,
+activo.posicion_id,
+activo.area_id,
+activo.sector_id,
+activo.estadoactivo_id,
+categoria.categoria_id,
+categoria.categoria_nombre,
+piso.piso_id,
+piso.piso_numero,
+posicion.posicion_id,
+posicion.posicion_posicion,
+area.area_id,
+area.area_nombre,
+sector.sector_id,
+sector.sector_nombre,
+estadoactivo.estadoactivo_id,
+estadoactivo.estadoactivo_nombre,
+activo.fecha_ingreso";
 
 if (isset($busqueda) && $busqueda != "") {
 	$consulta_datos = "SELECT $campos FROM activo 
@@ -88,12 +111,12 @@ if (isset($busqueda) && $busqueda != "") {
 } elseif ($estadoactivo_id > 0) {
 
 	$consulta_datos = "SELECT $campos FROM activo
+	INNER JOIN estadoactivo ON activo.estadoactivo_id=estadoactivo.estadoactivo_id 
 	INNER JOIN piso On activo.piso_id=piso.piso_id 
 	INNER JOIN categoria ON activo.categoria_id=categoria.categoria_id 
 	INNER JOIN posicion On activo.posicion_id=posicion.posicion_id
 	INNER JOIN area On activo.area_id=area.area_id 
 	INNER JOIN sector ON activo.sector_id=sector.sector_id 
-	INNER JOIN estadoactivo ON activo.estadoactivo_id=estadoactivo.estadoactivo_id 
 	WHERE activo.estadoactivo_id='$estadoactivo_id' 
 	ORDER BY activo.activo_codigo ASC LIMIT $inicio,$registros";
 

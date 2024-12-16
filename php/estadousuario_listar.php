@@ -4,15 +4,15 @@
 
 	if(isset($busqueda) && $busqueda!=""){
 
-		$consulta_datos="SELECT * FROM categoria WHERE categoria_nombre LIKE '%$busqueda%' ORDER BY categoria_nombre ASC LIMIT $inicio,$registros";
+		$consulta_datos="SELECT * FROM estadousuario WHERE estadousuario_nombre LIKE '%$busqueda%' ORDER BY estadousuario_nombre ASC LIMIT $inicio,$registros";
 
-		$consulta_total="SELECT COUNT(categoria_id) FROM categoria WHERE categoria_nombre LIKE '%$busqueda%' ";
+		$consulta_total="SELECT COUNT(estadousuario_id) FROM estadousuario WHERE estadousuario_nombre LIKE '%$busqueda%' ";
 
 	}else{
 
-		$consulta_datos="SELECT * FROM categoria ORDER BY categoria_nombre ASC LIMIT $inicio,$registros";
+		$consulta_datos="SELECT * FROM estadousuario ORDER BY estadousuario_nombre ASC LIMIT $inicio,$registros";
 
-		$consulta_total="SELECT COUNT(categoria_id) FROM categoria";
+		$consulta_total="SELECT COUNT(estadousuario_id) FROM estadousuario";
 		
 	}
 
@@ -33,7 +33,7 @@
                 <tr class="has-text-centered">
                 	<th>#</th>
                     <th>Nombre</th>
-					<th>Activos</th>
+					<th>Estados</th>
                     </tr>
             </thead>
             <tbody>
@@ -46,9 +46,9 @@
 			$tabla.='
 				<tr class="has-text-centered" >
 					<td>'.$contador.'</td>
-                    <td>'.$rows['categoria_nombre'].'</td>
+                    <td>'.$rows['estadousuario_nombre'].'</td>
                     <td>
-                        <a href="index.php?vista=asset_list&categoria_id='.$rows['categoria_id'].'" class="button is-link is-rounded is-small">Ver Activos</a>
+                        <a href="index.php?vista=user_list&estadousuario_id='.$rows['estadousuario_id'].'" class="button is-link is-rounded is-small">Ver usuarios</a>
                     </td>
 					</tr>
             ';
@@ -90,3 +90,4 @@
 	if($total>=1 && $pagina<=$Npaginas){
 		echo paginador_tablas($pagina,$Npaginas,$url,7);
 	}
+

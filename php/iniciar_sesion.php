@@ -42,7 +42,7 @@ if($check_user->rowCount() == 1){
     $check_user = $check_user->fetch();
 
     // Verificar si el usuario está activo
-    if($check_user['usuario_estado'] == 0){
+   /* if($check_user['usuario_estadousuario'] == 0){
         echo '
             <div class="notification is-danger is-light">
                 <strong>¡Cuenta desactivada!</strong><br>
@@ -50,7 +50,7 @@ if($check_user->rowCount() == 1){
             </div>
         ';
         exit();
-    }
+    } */
 
     // Verificar si el usuario y la clave coinciden
     if($check_user['usuario_usuario'] == $usuario && password_verify($clave, $check_user['usuario_clave'])){

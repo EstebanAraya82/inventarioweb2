@@ -1,6 +1,5 @@
 <?php
-	/* require_once "../inc/inicio_sesion.php"; */
-
+	require_once "../inc/session_start.php";
 	require_once "main.php";
 
     /* Almacenamiento id */
@@ -23,6 +22,73 @@
     }
     $check_usuario=null;
 
+      /* Almacenando datos del administrador */
+      $admin_usuario=limpiar_cadena($_POST['administrador_usuario']);
+      $admin_clave=limpiar_cadena($_POST['administrador_clave']);
+  
+  
+      /* Verificando campos obligatorios del administrador */
+      if($admin_usuario=="" || $admin_clave==""){
+          echo '
+              <div class="notification is-danger is-light">
+                  <strong>¡Ocurrio un error inesperado!</strong><br>
+                  No ha llenado los campos que corresponden a su USUARIO o CLAVE
+              </div>
+          ';
+          exit();
+      }
+  
+      /* Verificando integridad de los datos (admin) */
+      if(verificar_datos("[a-zA-Z0-9]{4,20}",$admin_usuario)){
+          echo '
+              <div class="notification is-danger is-light">
+                  <strong>¡Ocurrio un error inesperado!</strong><br>
+                  Su USUARIO no coincide con el formato solicitado
+              </div>
+          ';
+          exit();
+      }
+  
+      if(verificar_datos("[a-zA-Z0-9$@.-]{7,100}",$admin_clave)){
+          echo '
+              <div class="notification is-danger is-light">
+                  <strong>¡Ocurrio un error inesperado!</strong><br>
+                  Su CLAVE no coincide con el formato solicitado
+              </div>
+          ';
+          exit();
+      }
+  
+  
+      /* Verificando el administrador en DB */
+      $check_admin=conexion();
+      $check_admin=$check_admin->query("SELECT usuario_usuario,usuario_clave FROM usuario WHERE usuario_usuario='$admin_usuario' AND usuario_id='".$_SESSION['id']."'");
+      if($check_admin->rowCount()==1){
+  
+          $check_admin=$check_admin->fetch();
+  
+          if($check_admin['usuario_usuario']!=$admin_usuario || !password_verify($admin_clave, $check_admin['usuario_clave'])){
+              echo '
+                  <div class="notification is-danger is-light">
+                      <strong>¡Ocurrio un error inesperado!</strong><br>
+                      USUARIO o CLAVE de administrador incorrectos
+                  </div>
+              ';
+              exit();
+          }
+  
+      }else{
+          echo '
+              <div class="notification is-danger is-light">
+                  <strong>¡Ocurrio un error inesperado!</strong><br>
+                  USUARIO o CLAVE de administrador incorrectos
+              </div>
+          ';
+          exit();
+      }
+      $check_admin=null;
+  
+
    /* Almacenando datos del usuario */
    $nombre=limpiar_cadena($_POST['usuario_nombre']);
    $apellido=limpiar_cadena($_POST['usuario_apellido']);
@@ -30,14 +96,14 @@
    $correo=limpiar_cadena($_POST['usuario_correo']);
    $clave_1=limpiar_cadena($_POST['usuario_clave_1']);
    $clave_2=limpiar_cadena($_POST['usuario_clave_2']);   
-   $usuarioestado=limpiar_cadena($_POST['usuario_estado']);
+   $estadousuario=limpiar_cadena($_POST['usuario_estadousuario']);
    $area=limpiar_cadena($_POST['usuario_area']);
    $rol=limpiar_cadena($_POST['usuario_rol']);
    
 
 
     /* Verificando campos obligatorios del usuario */
-     if($nombre=="" || $apellido=="" || $usuario=="" || $usuarioestado=="" || $area="" || $rol=""){
+     if($nombre=="" || $apellido=="" || $usuario=="" || $estadousuario=="" || $area="" || $rol=""){
         echo '
             <div class="notification is-danger is-light">
                 <strong>¡Ocurrio un error inesperado!</strong><br>
@@ -166,10 +232,10 @@
     }
 
      /* Verificando estado */
-     if($usuarioestado!=$datos['usuario_estado']){
-	    $check_usuarioestado=conexion();
-	    $check_usuarioestado=$check_usuarioestado->query("SELECT usuario_estado FROM usuario WHERE usuario_estado='$usuarioestado'");
-	    if($check_usuarioestado->rowCount()>0){
+     if($estadousuario!=$datos['estadousuario_id']){
+	    $check_estadousuario=conexion();
+	    $check_estadousuario=$check_estadousuario->query("SELECT estadousuario_id FROM estadousuario WHERE estadousuario_id='$estadousuario'");
+	    if($check_estadousuario->rowCount()>0){
 	        echo '
 	            <div class="notification is-danger is-light">
 	                <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
@@ -178,7 +244,7 @@
 	        ';
 	        exit();
 	    }
-	    $check_usuarioestado=null;
+	    $check_estadousuario=null;
     }
 
    /* Verificando área */
@@ -218,7 +284,7 @@
     /* Actualizar datos */
     $actualizar_usuario=conexion();
     $actualizar_usuario=$actualizar_usuario->prepare("UPDATE usuario SET usuario_nombre=:nombre,usuario_apellido=:apellido,
-    usuario_usuario=:usuario,usuario_correo=:correo,usuario_clave=:clave,usuario_estado=:usuarioestado,area_id=area,rol_id=rol WHERE usuario_id=:id");
+    usuario_usuario=:usuario,usuario_correo=:correo,usuario_clave=:clave,estadousuario_id=:estadousuario,area_id=area,rol_id=rol WHERE usuario_id=:id");
 
     $marcadores=[
         ":nombre"=>$nombre,
@@ -226,7 +292,7 @@
         ":usuario"=>$usuario,
         ":correo"=>$correo,
         ":clave"=>$clave,
-        ":usuarioestado"=>$usuarioestado,
+        ":estadousuario"=>$estadousuario,
         ":area"=>$area,
         ":rol"=>$rol,
         ":id"=>$id

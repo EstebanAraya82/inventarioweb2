@@ -9,7 +9,7 @@
     $correo=limpiar_cadena($_POST['usuario_correo']);
     $clave_1=limpiar_cadena($_POST['usuario_clave_1']);
     $clave_2=limpiar_cadena($_POST['usuario_clave_2']);
-    $estadousuario=limpiar_cadena($_POST['usuario_estado']);
+    $estadousuario=limpiar_cadena($_POST['usuario_estadousuario']);
     $rol=limpiar_cadena($_POST['usuario_rol']);
     $area=limpiar_cadena($_POST['usuario_area']);
     
@@ -167,7 +167,7 @@
     /* Guardando datos */
     $guardar_usuario=conexion();
     $guardar_usuario=$guardar_usuario->prepare("INSERT INTO usuario (usuario_nombre,usuario_apellido,usuario_usuario,usuario_correo,
-    usuario_clave,usuario_estado,rol_id,area_id) VALUES(:nombre,:apellido,:usuario,:correo,:clave,:estadousuario,:rol,:area)");
+    usuario_clave,estadousuario_id,rol_id,area_id) VALUES(:nombre,:apellido,:usuario,:correo,:clave,:estadousuario,:rol,:area)");
 
     $marcadores=[
         ":nombre"=>$nombre,
