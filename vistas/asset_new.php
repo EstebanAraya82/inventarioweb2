@@ -150,7 +150,7 @@
 			<div class="column">
 				<label>Estado</label><br>
 				<div class="select is-rounded">
-					<select name="activo_estado">
+					<select name="activo_estadoactivo">
 						<option value="" selected="">Seleccione una opción</option>
 						<?php
 						$estadoactivos = conexion();

@@ -35,9 +35,22 @@
 
             <div class="columns">
                 <div class="column">
-                    <div class="control">
-                        <label>Código activo</label>
-                        <input class="input" type="text" name="codigo_id" pattern="[0-9]{3,50}" placeholder="Ingrese el codigo del activo" maxlength="50" required>
+                    <label>Codigo activo</label><br>
+                    <div class="select is-rounded">
+                        <select name="solicitudbaja_activo">
+                            <option value="" selected="">Seleccione una opción</option>
+                            <?php
+                            $activo = conexion();
+                            $activo = $activo->query("SELECT * From activo");
+                            if ($activo->rowCount() > 0) {
+                                $activo = $activo->fetchAll();
+                                foreach ($activo as $row) {
+                                    echo '<option value="' . $row['activo_id'] . '" >' . $row['activo_codigo'] . '</option>';
+                                }
+                            }
+                            $activo = null;
+                            ?>
+                        </select>
                     </div>
                 </div>
                 <div class="column">
@@ -49,21 +62,11 @@
                 <div class="column">
                     <div class="control">
                         <label>Código solicitud</label>
-                        <input class="input" type="text" name="solicitud_codigo" pattern="[0-9]{3,50}" maxlength="50" required readonly>
+                        <input class="input" type="text" name="solicitud_codigo" pattern="[0-9]{3,50}" maxlength="50" required>
                     </div>
                 </div>
             </div>
-            <script>
-                /* Función para generar un número aleatorio dígitos */
-                function generarCodigo() {
-
-                    /* Número entre 1 y 999999 */
-                    return Math.floor(1 + Math.random() * 900000);
-                }
-
-                /* Asignar el número generado al campo de entrada */
-                document.getElementById('codigoActivo').value = generarCodigo();
-            </script>
+           
             <div class="columns">
                 <div class="column">
                     <div class="control">
@@ -85,18 +88,37 @@
                 <div class="column">
                     <label>Estado solicitud</label><br>
                     <div class="select is-rounded">
-                        <select name="solicitud_estado" required>
-                            <option value="" selected>Seleccione una opción</option>
+                        <select name="solicitudbaja_estadosolicitud">
+                            <option value="" selected="">Seleccione una opción</option>
                             <?php
                             $estadosol = conexion();
-                            $estadosol = $estadosol->query("SELECT DISTINCT solicitud_estado FROM solicitudbaja");
+                            $estadosol = $estadosol->query("SELECT * From estadosolicitud");
                             if ($estadosol->rowCount() > 0) {
                                 $estadosol = $estadosol->fetchAll();
                                 foreach ($estadosol as $row) {
-                                    echo '<option value="' . htmlspecialchars($row['solicitud_estado']) . '">' . htmlspecialchars($row['solicitud_estado']) . '</option>';
+                                    echo '<option value="' . $row['estadosolicitud_id'] . '" >' . $row['estadosolicitud_nombre'] . '</option>';
                                 }
                             }
                             $estadosol = null;
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="column">
+                    <label>Tipo baja</label><br>
+                    <div class="select is-rounded">
+                        <select name="solicitudbaja_tipobaja">
+                            <option value="" selected="">Seleccione una opción</option>
+                            <?php
+                            $tipo = conexion();
+                            $tipo = $tipo->query("SELECT * From tipobaja");
+                            if ($tipo->rowCount() > 0) {
+                                $tipo = $tipo->fetchAll();
+                                foreach ($tipo as $row) {
+                                    echo '<option value="' . $row['tipobaja_id'] . '" >' . $row['tipobaja_nombre'] . '</option>';
+                                }
+                            }
+                            $tipo = null;
                             ?>
                         </select>
                     </div>
@@ -118,25 +140,45 @@
                 </div>
             </div>
 
-            <div class="columns is-centered">
-                <div class="column is-half has-text-centered">
-                    <label class="label">Adjuntar documento para la baja de activo</label>
-                    <div class="file has-name is-centered is-primary">
-                        <label class="file-label">
-                            <input class="file-input" type="file" name="documento" />
-                            <span class="file-cta">
-                                <span class="file-icon">
-                                    <i class="fas fa-upload"></i>
+            <form action="/ruta-del-backend" method="POST" enctype="multipart/form-data">
+                <div class="columns is-centered">
+                    <div class="column is-half has-text-centered">
+                        <label class="label">Adjuntar documento para la baja de activo</label>
+                        <div class="file has-name is-centered is-primary">
+                            <label class="file-label">
+                                <input class="file-input" type="file" name="documento" id="documento" />
+                                <span class="file-cta">
+                                    <span class="file-icon">
+                                        <i class="fas fa-upload"></i>
+                                    </span>
+                                    <span class="file-label">Elija un archivo…</span>
                                 </span>
-                                <span class="file-label"> Elija un archivo… </span>
-                            </span>
-                            <span class="file-name"> No se ha subido ningún archivo </span>
-                        </label>
-                        
-                    </div>
-                    
+                                <span class="file-name" id="file-name">No se ha subido ningún archivo</span>
+                            </label>
+                        </div>
+                
+
+
+
+            </form>
+
+            <script>
+                // Mostrar el nombre del archivo seleccionado
+                const fileInput = document.getElementById("documento");
+                const fileName = document.getElementById("file-name");
+
+                fileInput.addEventListener("change", function() {
+                    const file = fileInput.files[0];
+                    if (file) {
+                        fileName.textContent = file.name;
+                    } else {
+                        fileName.textContent = "No se ha subido ningún archivo";
+                    }
+                });
+            </script>
                 </div>
-            </div>
+                </div>
+
 
             <p class="has-text-centered">
                 <button type="submit" class="button is-info is-rounded">Guardar</button>

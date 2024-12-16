@@ -190,12 +190,14 @@
 							<option value="" selected="">Seleccione una opción</option>
 							<?php
 							$estadoactivos = conexion();
-							$estadoactivos = $estadoactivos->query("SELECT * From activo");
+							$estadoactivos = $estadoactivos->query("SELECT * From estadoactivo");
 							if ($estadoactivos->rowCount() > 0) {
 								$estadoactivos = $estadoactivos->fetchAll();
 								foreach ($estadoactivos as $row) {
-									if ($datos['activo_estado'] == $row['activo_estado']) {
-										echo '<option value="' . $row['activo_estado'] . '" selected="" >' . $row['activo_estado'] . ' (Actual)</option>';
+									if ($datos['estadoactivo_id'] == $row['estadoactivo_id']) {
+										echo '<option value="' . $row['estadoactivo_id'] . '" selected="" >' . $row['estadoactivo_nombre'] . ' (Actual)</option>';
+									} else {
+										echo '<option value="' . $row['estadoactivo_id'] . '" >' . $row['estadoactivo_nombre'] . '</option>';
 									} 
 								}
 							}

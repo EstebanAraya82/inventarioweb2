@@ -61,11 +61,11 @@
 						<option value="" selected="">Seleccione una opción</option>
 						<?php
 						$estadousuarios = conexion();
-						$estadousuarios = $estadousuarios->query("SELECT * From usuario");
+						$estadousuarios = $estadousuarios->query("SELECT * From estadousuario");
 						if ($estadousuarios->rowCount() > 0) {
 							$estadousuarios = $estadousuarios->fetchAll();
 							foreach ($estadousuarios as $row) {
-								echo '<option value="' . $row['usuario_estado'] . '" >' . $row['usuario_estado'] . '</option>';
+								echo '<option value="' . $row['estadousuario_id'] . '" >' . $row['estadousuario_nombre'] . '</option>';
 							}
 						}
 						$estadousuarios = null;

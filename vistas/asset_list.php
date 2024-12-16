@@ -3,7 +3,12 @@
     <h2 class="subtitle">Lista de activos</h2>
 </div>
 
+<!-- Botón para generar el reporte -->
 <div class="container pb-12 pt-12">
+    <div class="control">
+        <a href="./php/reporte_activos.php" class="button is-primary">Generar Reporte</a>
+    </div>
+    
     <?php
     include "./inc/btn_atras.php";
     require_once "./php/main.php";
@@ -27,7 +32,7 @@
     $posicion_id = (isset($_GET['posicion_id'])) ?  $_GET['posicion_id'] : 0;
     $area_id = (isset($_GET['area_id'])) ?  $_GET['area_id'] : 0;
     $sector_id = (isset($_GET['sector_id'])) ?  $_GET['sector_id'] : 0;
-   
+    $estadoactivo_id = (isset($_GET['estadoactivo_id'])) ?  $_GET['estadoactivo_id'] : 0;
 
     $pagina = limpiar_cadena($pagina);
     $url = "index.php?vista=asset_list&page=";

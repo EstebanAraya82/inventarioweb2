@@ -19,7 +19,7 @@
 
         $pagina=limpiar_cadena($pagina);
         $url="index.php?vista=area_list&page=";
-        $registros=5;
+        $registros=10;
         $busqueda="";
 
         /* Paginador area */

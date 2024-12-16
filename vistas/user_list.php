@@ -23,6 +23,8 @@
         }
 
        $area_id=(isset($_GET['area_id'])) ?  $_GET['area_id'] : 0;
+       $rol_id=(isset($_GET['rol_id'])) ?  $_GET['rol_id'] : 0;
+       $estadousuario_id=(isset($_GET['estadousuario_id'])) ?  $_GET['estadousuario_id'] : 0;
        
 
         $pagina=limpiar_cadena($pagina);

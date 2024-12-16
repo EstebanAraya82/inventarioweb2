@@ -1,19 +1,13 @@
 <div class="container is-fluid mb-6">
-    <h1 class="title">Roles</h1>
-    <h2 class="subtitle">Lista de roles</h2>
+    <h1 class="title">Estados</h1>
+    <h2 class="subtitle">Lista de estados</h2>
 </div>
 
-<div class="container pb-6 pt-6">  
+<div class="container pb-12 pt-12">  
     <?php
         include "./inc/btn_atras.php";
         require_once "./php/main.php";
-
-         /* Eliminar rol */
-         if(isset($_GET['role_id_del'])){
-            require_once "./php/rol_eliminar.php";
-        }
-
-       
+           
         if(!isset($_GET['page'])){
             $pagina=1;
         }else{
@@ -24,11 +18,11 @@
         }
 
         $pagina=limpiar_cadena($pagina);
-        $url="index.php?vista=role_list&page=";
-        $registros=6;
+        $url="index.php?vista=statusasset_list&page=";
+        $registros=10;
         $busqueda="";
 
-        /* Paginador rol */
-        require_once "./php/rol_listar.php";
+        /* Paginador estado activo */
+        require_once "./php/estadoactivo_listar.php";
     ?>
 </div>

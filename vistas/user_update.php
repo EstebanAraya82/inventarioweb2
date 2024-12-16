@@ -65,13 +65,13 @@
 				<div class="column">
 					<div class="control">
 						<label>Repetir clave</label>
-						<input class="input" type="password" name="usuario_clave_1" placeholder="ingrese clave" pattern="[a-zA-Z0-9$@.-]{7,50}" maxlength="50" required>
+						<input class="input" type="password" name="usuario_clave_1" placeholder="ingrese clave" pattern="[a-zA-Z0-9$@.-]{7,50}" maxlength="50">
 					</div>
 				</div>
 				<div class="column">
 					<div class="control">
 						<label>Repetir clave</label>
-						<input class="input" type="password" name="usuario_clave_2" placeholder="Repita clave" pattern="[a-zA-Z0-9$@.-]{7,50}" maxlength="50" required>
+						<input class="input" type="password" name="usuario_clave_2" placeholder="Repita clave" pattern="[a-zA-Z0-9$@.-]{7,50}" maxlength="50">
 					</div>
 				</div>
 			</div>
@@ -83,11 +83,11 @@
 							<option value="" selected="">Seleccione estado</option>
 							<?php
 							$estadousuarios = conexion();
-							$estadousuarios = $estadousuarios->query("SELECT * From usuario");
+							$estadousuarios = $estadousuarios->query("SELECT * From estadousuario");
 							if ($estadousuarios->rowCount() > 0) {
 								$estadousuarios = $estadousuarios->fetchAll();
 								foreach ($estadousuarios as $row) {
-									echo '<option value="' . $row['usuario_estado'] . '" >' . $row['usuario_estado'] . '</option>';
+									echo '<option value="' . $row['estadousuario_id'] . '" >' . $row['estadousuario_nombre'] . '</option>';
 								}
 							}
 							$estadousuarios = null;
@@ -137,10 +137,28 @@
 				</div>
 			</div>
 
-			<p class="has-text-centered">
-				<button type="submit" class="button is-success is-rounded">Actualizar</button>
-			</p>
-		</form>
+			<br><br><br>
+		<p class="has-text-centered">
+			Para poder actualizar los datos de este usuario por favor ingrese su USUARIO y CLAVE con la que ha iniciado sesión
+		</p>
+		<div class="columns">
+		  	<div class="column">
+		    	<div class="control">
+					<label>Usuario</label>
+				  	<input class="input" type="text" name="administrador_usuario" pattern="[a-zA-Z0-9]{4,20}" maxlength="20" required >
+				</div>
+		  	</div>
+		  	<div class="column">
+		    	<div class="control">
+					<label>Clave</label>
+				  	<input class="input" type="password" name="administrador_clave" pattern="[a-zA-Z0-9$@.-]{7,100}" maxlength="100" required >
+				</div>
+		  	</div>
+		</div>
+		<p class="has-text-centered">
+			<button type="submit" class="button is-success is-rounded">Actualizar</button>
+		</p>
+	</form>
 	<?php
 	} else {
 		include "./inc/alerta_error.php";

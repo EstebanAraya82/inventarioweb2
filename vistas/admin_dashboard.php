@@ -103,7 +103,7 @@ if (!isset($_SESSION['id']) || $_SESSION['rol_id'] != 1) {
     <!-- Contenido principal -->
     <div class="main-content">
         <h3 class="title is-3">Bienvenido, <?php echo $_SESSION['nombre'] . " " . $_SESSION['apellido']; ?></h3>
-
+        <p class="is-size-4">Este es tu panel </p>
     </div>
 
 </body>
