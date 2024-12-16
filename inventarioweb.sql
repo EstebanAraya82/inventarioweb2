@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-12-2024 a las 05:37:20
+-- Tiempo de generación: 16-12-2024 a las 03:12:40
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -121,7 +121,48 @@ INSERT INTO `estadoactivo` (`estadoactivo_id`, `estadoactivo_nombre`) VALUES
 (4, 'En transito'),
 (5, 'En servicio técnico'),
 (6, 'En garantía'),
-(7, 'Baja');
+(7, 'Baja'),
+(8, 'WAHA');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `estadosolicitud`
+--
+
+CREATE TABLE `estadosolicitud` (
+  `estadosolicitud_id` int(11) NOT NULL,
+  `estadosolicitud_nombre` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `estadosolicitud`
+--
+
+INSERT INTO `estadosolicitud` (`estadosolicitud_id`, `estadosolicitud_nombre`) VALUES
+(1, 'Aprobada'),
+(2, 'Pendiente'),
+(3, 'Rechazada');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `estadousuario`
+--
+
+CREATE TABLE `estadousuario` (
+  `estadousuario_id` int(11) NOT NULL,
+  `estadousuario_nombre` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `estadousuario`
+--
+
+INSERT INTO `estadousuario` (`estadousuario_id`, `estadousuario_nombre`) VALUES
+(1, 'Habilitado'),
+(2, 'Deshabilitado'),
+(3, 'Eliminado');
 
 -- --------------------------------------------------------
 
@@ -215,11 +256,31 @@ CREATE TABLE `solicitudbaja` (
   `solicitud_codigo` varchar(50) NOT NULL,
   `aprobadornom` varchar(50) NOT NULL,
   `aprobadorape` varchar(50) NOT NULL,
-  `solicitud_estado` enum('Aprobada','Pendiente','Rechazada') NOT NULL,
+  `estadosolicitud_id` int(11) NOT NULL,
+  `tipobaja_id` int(11) NOT NULL,
   `fecha_aprobacion` datetime DEFAULT NULL,
   `motivo` varchar(255) NOT NULL,
   `documento` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipobaja`
+--
+
+CREATE TABLE `tipobaja` (
+  `tipobaja_id` int(11) NOT NULL,
+  `tipobaja_nombre` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `tipobaja`
+--
+
+INSERT INTO `tipobaja` (`tipobaja_id`, `tipobaja_nombre`) VALUES
+(1, 'Normal'),
+(2, 'Anticipada');
 
 -- --------------------------------------------------------
 
@@ -236,17 +297,18 @@ CREATE TABLE `usuario` (
   `usuario_clave` varchar(255) NOT NULL,
   `rol_id` int(11) NOT NULL,
   `area_id` int(11) NOT NULL,
-  `usuario_estado` enum('Habilitado','Deshabilitado','Baja') NOT NULL
+  `estadousuario_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`usuario_id`, `usuario_nombre`, `usuario_apellido`, `usuario_usuario`, `usuario_correo`, `usuario_clave`, `rol_id`, `area_id`, `usuario_estado`) VALUES
-(4, 'José', 'Avendaño', 'avendano.5@nlsa.teleperformance.com', 'jose.avendano@teleperformance.com', '$2y$10$WX8h8UQrX2HTRKoT6xuR0ubPOQRalBeZzRoTKvlItMGHF1.oUIVdq', 3, 2, 'Habilitado'),
-(5, 'Admin', 'istrador', 'administrador', '', '$2y$10$EqR0G5YIxgPd2hrcdLpdtu2CPBBX7sZLnRNBl6swfaJFLSluwukFq', 1, 1, 'Habilitado'),
-(6, 'Cristobal', 'Curimil', 'curimil.10@nlsa.teleperformance.com', 'cristobal.curimil@teleperformance.cl', '$2y$10$rH9s4VAqw99WdmMWMbfC5uJNOww4Ddg1s0QpKzCwFj9wyhmjeNNre', 2, 1, 'Habilitado');
+INSERT INTO `usuario` (`usuario_id`, `usuario_nombre`, `usuario_apellido`, `usuario_usuario`, `usuario_correo`, `usuario_clave`, `rol_id`, `area_id`, `estadousuario_id`) VALUES
+(4, 'José', 'Avendaño', 'avendano.5@nlsa.teleperformance.com', 'jose.avendano@teleperformance.com', '$2y$10$WX8h8UQrX2HTRKoT6xuR0ubPOQRalBeZzRoTKvlItMGHF1.oUIVdq', 3, 2, 1),
+(5, 'Administrador', '', 'administrador', '', '$2y$10$EqR0G5YIxgPd2hrcdLpdtu2CPBBX7sZLnRNBl6swfaJFLSluwukFq', 1, 1, 1),
+(6, 'Cristobal', 'Curimil', 'curimil.10@nlsa.teleperformance.com', 'cristobal.curimil@teleperformance.cl', '$2y$10$rH9s4VAqw99WdmMWMbfC5uJNOww4Ddg1s0QpKzCwFj9wyhmjeNNre', 2, 1, 1),
+(7, 'Sebastian', 'Ruiz', 'ruiz.6@nlsa.teleperformance.com', 'sebastian.ruiz@teleperformance.com', '$2y$10$H5jjgc/fdyFnQU/sLAad/.htimHQ0zNxZ8CbJpUuE5hUISn5Bdjhu', 4, 2, 1);
 
 --
 -- Índices para tablas volcadas
@@ -283,6 +345,18 @@ ALTER TABLE `estadoactivo`
   ADD PRIMARY KEY (`estadoactivo_id`);
 
 --
+-- Indices de la tabla `estadosolicitud`
+--
+ALTER TABLE `estadosolicitud`
+  ADD PRIMARY KEY (`estadosolicitud_id`);
+
+--
+-- Indices de la tabla `estadousuario`
+--
+ALTER TABLE `estadousuario`
+  ADD PRIMARY KEY (`estadousuario_id`);
+
+--
 -- Indices de la tabla `piso`
 --
 ALTER TABLE `piso`
@@ -311,7 +385,15 @@ ALTER TABLE `sector`
 --
 ALTER TABLE `solicitudbaja`
   ADD PRIMARY KEY (`solicitud_id`),
-  ADD KEY `activo_id` (`activo_id`);
+  ADD KEY `activo_id` (`activo_id`),
+  ADD KEY `tipobaja_id` (`tipobaja_id`),
+  ADD KEY `estadosolicitud_id` (`estadosolicitud_id`);
+
+--
+-- Indices de la tabla `tipobaja`
+--
+ALTER TABLE `tipobaja`
+  ADD PRIMARY KEY (`tipobaja_id`);
 
 --
 -- Indices de la tabla `usuario`
@@ -320,7 +402,8 @@ ALTER TABLE `usuario`
   ADD PRIMARY KEY (`usuario_id`),
   ADD KEY `area_id` (`area_id`),
   ADD KEY `area_id_2` (`area_id`),
-  ADD KEY `rol_id` (`rol_id`);
+  ADD KEY `rol_id` (`rol_id`),
+  ADD KEY `estadousuario_id` (`estadousuario_id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -348,7 +431,19 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de la tabla `estadoactivo`
 --
 ALTER TABLE `estadoactivo`
-  MODIFY `estadoactivo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `estadoactivo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de la tabla `estadosolicitud`
+--
+ALTER TABLE `estadosolicitud`
+  MODIFY `estadosolicitud_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `estadousuario`
+--
+ALTER TABLE `estadousuario`
+  MODIFY `estadousuario_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `piso`
@@ -381,10 +476,16 @@ ALTER TABLE `solicitudbaja`
   MODIFY `solicitud_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `tipobaja`
+--
+ALTER TABLE `tipobaja`
+  MODIFY `tipobaja_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `usuario_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `usuario_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Restricciones para tablas volcadas
@@ -405,14 +506,17 @@ ALTER TABLE `activo`
 -- Filtros para la tabla `solicitudbaja`
 --
 ALTER TABLE `solicitudbaja`
-  ADD CONSTRAINT `solicitudbaja_ibfk_1` FOREIGN KEY (`activo_id`) REFERENCES `activo` (`activo_id`);
+  ADD CONSTRAINT `solicitudbaja_ibfk_1` FOREIGN KEY (`activo_id`) REFERENCES `activo` (`activo_id`),
+  ADD CONSTRAINT `solicitudbaja_ibfk_2` FOREIGN KEY (`estadosolicitud_id`) REFERENCES `estadosolicitud` (`estadosolicitud_id`),
+  ADD CONSTRAINT `solicitudbaja_ibfk_3` FOREIGN KEY (`tipobaja_id`) REFERENCES `tipobaja` (`tipobaja_id`);
 
 --
 -- Filtros para la tabla `usuario`
 --
 ALTER TABLE `usuario`
   ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`rol_id`) REFERENCES `rol` (`rol_id`),
-  ADD CONSTRAINT `usuario_ibfk_2` FOREIGN KEY (`area_id`) REFERENCES `area` (`area_id`);
+  ADD CONSTRAINT `usuario_ibfk_2` FOREIGN KEY (`area_id`) REFERENCES `area` (`area_id`),
+  ADD CONSTRAINT `usuario_ibfk_3` FOREIGN KEY (`estadousuario_id`) REFERENCES `estadousuario` (`estadousuario_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
