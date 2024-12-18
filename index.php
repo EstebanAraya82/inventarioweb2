@@ -1,11 +1,15 @@
-<?php require "./inc/session_start.php"; ?>
+<?php
+ob_start(); 
+require "./inc/session_start.php";
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<?php include "./inc/head.php"; ?>
+<?php include "./inc/head.php";?>
 </head>
 <body>
-    <?php 
+
+<?php 
 
 if(!isset($_GET['vista']) || $_GET['vista']==""){
     $_GET['vista']="login";
@@ -14,7 +18,7 @@ if(!isset($_GET['vista']) || $_GET['vista']==""){
 
 if(is_file("./vistas/".$_GET['vista'].".php") && $_GET['vista']!="login" && $_GET['vista']!="404"){
 
-    include "./inc/navbar.php"; 
+   
     include "./vistas/".$_GET['vista'].".php"; 
     include "./inc/script.php";
     
@@ -26,6 +30,7 @@ if(is_file("./vistas/".$_GET['vista'].".php") && $_GET['vista']!="login" && $_GE
     }
 }   
 
-     ?>
+ob_end_flush();
+?>
 </body>
 </html>

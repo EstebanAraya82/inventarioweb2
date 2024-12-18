@@ -14,7 +14,7 @@
         }else{
             return true;
         }
-	}
+	} 
 
 
 	/* Limpiar cadenas */

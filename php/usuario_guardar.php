@@ -1,4 +1,5 @@
 <?php
+
     require_once "main.php"; 
 
     /* Almacenar datos */
@@ -8,13 +9,14 @@
     $correo=limpiar_cadena($_POST['usuario_correo']);
     $clave_1=limpiar_cadena($_POST['usuario_clave_1']);
     $clave_2=limpiar_cadena($_POST['usuario_clave_2']);
-    $estado=limpiar_cadena($_POST['usuario_estado']);
+    $estadousuario=limpiar_cadena($_POST['usuario_estadousuario']);
     $rol=limpiar_cadena($_POST['usuario_rol']);
+    $area=limpiar_cadena($_POST['usuario_area']);
     
 
 
     /* Verificar campos obligatorios */
-    if($nombre=="" || $apellido=="" || $usuario=="" || $clave_1=="" || $clave_2=="" || $estado=="" || $rol==""){
+    if($nombre=="" || $apellido=="" || $usuario=="" || $clave_1=="" || $clave_2=="" || $estadousuario=="" || $rol=="" || $area==""){
         echo '
             <div class="notification is-danger is-light">
                 <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
@@ -56,7 +58,7 @@
         exit();
     }
 
-    if(verificar_datos("[a-zA-Z0-9$@.-*]{7,50}",$clave_1) || verificar_datos("[a-zA-Z0-9$@.-*]{7,50}",$clave_2)){
+    if(verificar_datos("[a-zA-Z0-9$@.-]{7,50}",$clave_1) || verificar_datos("[a-zA-Z0-9$@.-]{7,50}",$clave_2)){
         echo '
             <div class="notification is-danger is-light">
                <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
@@ -66,27 +68,7 @@
         exit();
     }
 
-    if(verificar_datos("[a-zA-Z]{4,50}",$estado)){
-        echo '
-            <div class="notification is-danger is-light">
-               <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
-                El estado no coincide con el formato solicitado
-            </div>
-        ';
-        exit();
-    }
-
-    if(verificar_datos("[a-zA-Z]{4,50}",$rol)){
-        echo '
-            <div class="notification is-danger is-light">
-                <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
-                El estado no coincide con el formato solicitado
-            </div>
-        ';
-        exit();
-    }
-
-     /* Verificar correo */
+   /* Verificar correo */
      if($correo!=""){
         if(filter_var($correo, FILTER_VALIDATE_EMAIL)){
             $check_correo=conexion();
@@ -132,7 +114,7 @@
         echo '
             <div class="notification is-danger is-light">
                 <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
-                Las contraseñas que ha ingresado no coinciden
+                Las CLAVES que ha ingresado no coinciden
             </div>
         ';
         exit();
@@ -140,10 +122,10 @@
         $clave=password_hash($clave_1,PASSWORD_BCRYPT,["cost"=>10]);
     }
 
-      /* verificar estado */
-      $check_estado=conexion();
-      $check_estado=$check_estado->query("SELECT estado_id FROM estado WHERE estado_id='$estado'");
-      if($check_estado->rowCount()<=0){
+      /* verificar estado usuario */
+      $check_estadousuario=conexion();
+      $check_estadousuario=$check_estadousuario->query("SELECT usuario_estado FROM usuario WHERE usuario_estado='$estadousuario'");
+      if($check_estadousuario->rowCount()<=0){
           echo'
           <div class="notification is-danger is-light">
           <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
@@ -152,24 +134,40 @@
           ';
           exit();
       }
+      $check_estadousuario=null;
 
-    /* verificar rol */
-    $check_rol=conexion();
-    $check_rol=$check_rol->query("SELECT rol_id FROM rol WHERE rol_id='$rol'");
-    if($check_rol->rowCount()<=0){
+       /* verificar rol */
+       $check_rol=conexion();
+       $check_rol=$check_rol->query("SELECT rol_id FROM rol WHERE rol_id='$rol'");
+       if($check_rol->rowCount()<=0){
+           echo'
+           <div class="notification is-danger is-light">
+           <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
+                   El estado que ha ingresado no existe
+               </div>
+           ';
+           exit();
+       }
+       $check_rol=null;
+
+   /* verificar area */
+    $check_area=conexion();
+    $check_area=$check_area->query("SELECT area_id FROM area WHERE area_id='$area'");
+    if($check_area->rowCount()<=0){
         echo'
         <div class="notification is-danger is-light">
         <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
-                El rol que ha ingresado no existe
+                El área que ha ingresado no existe
             </div>
         ';
         exit();
     }
+    $check_area=null;
 
     /* Guardando datos */
     $guardar_usuario=conexion();
-    $guardar_usuario=$guardar_usuario->prepare("INSERT INTO usuario(usuario_nombre,usuario_apellido,usuario_usuario,usuario_corrreo,
-    usuario_clave,estado_id,rol_id) VALUES(:nombre,:apellido,:usuario,:correo,:clave,:estado,:rol)");
+    $guardar_usuario=$guardar_usuario->prepare("INSERT INTO usuario (usuario_nombre,usuario_apellido,usuario_usuario,usuario_correo,
+    usuario_clave,estadousuario_id,rol_id,area_id) VALUES(:nombre,:apellido,:usuario,:correo,:clave,:estadousuario,:rol,:area)");
 
     $marcadores=[
         ":nombre"=>$nombre,
@@ -177,8 +175,9 @@
         ":usuario"=>$usuario,
         ":correo"=>$correo,
         ":clave"=>$clave,
-        ":estado"=> $estado,
-        ":rol"=>$rol
+        ":estadousuario"=>$estadousuario,
+        ":rol"=>$rol,
+        ":area"=>$area
     ];
 
     $guardar_usuario->execute($marcadores);
