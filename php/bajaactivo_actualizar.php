@@ -26,19 +26,19 @@ $check_solicitud = null;
 /* Almacenando datos */
 $solicitadornom = limpiar_cadena($_POST['usuario_nombre']);
 $solicitadorape = limpiar_cadena($_POST['usuario_apellido']);
-$activoid = limpiar_cadena($_POST['activo_id']);
+$activoid = limpiar_cadena($_POST['solicitudbaja_activo']);
 $fechaso = limpiar_cadena($_POST['fecha_solicitud']);
 $codigo = limpiar_cadena($_POST['solicitud_codigo']);
-$nombreapro = limpiar_cadena($_POST['usuario_nombre']);
-$apellidoapro = limpiar_cadena($_POST['usuario_apellido']);
-$estadosol = limpiar_cadena($_POST['solicitud_estado']);
+$nombreapro = limpiar_cadena($_POST['aprobador_nombre']);
+$apellidoapro = limpiar_cadena($_POST['aprobador_apellido']);
+$estadosol = limpiar_cadena($_POST['solicitudbaja_estadosolicitud']);
 $fechaapro = limpiar_cadena($_POST['fecha_aprobacion']);
 $motivo = limpiar_cadena($_POST['motivo']);
-$documento = limpiar_cadena($_POST['documento']);
+// $documento = limpiar_cadena($_POST['documento']);
 
 
 /* Verificación de datos obligatorios */
-if ($solicitadornom == "" || $solicitadorape == "" || $activoid == "" || $fechaso == "" || $codigo == "" || $estadosol == "" || $motivo == "" || $documento == "") {
+if ($solicitadornom == "" || $solicitadorape == "" || $activoid == "" || $fechaso == "" || $codigo == "" || $estadosol == "" || $motivo == "") {
     echo '
       <div class="notification is-danger is-light">
     <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
@@ -107,8 +107,8 @@ if ($solicitadornom == "" || $solicitadorape == "" || $activoid == "" || $fechas
   
 /* Actualizando datos */
 $actualizar_solicitud = conexion();
-$actualizar_solicitud = $actualizar_solicitud->prepare("UPDATE solicitudbaja SET solicitadornom=:solicitadornom,solicitadorape=:solicitadorape,activo_id=:activoid,fecha_solicitud=:fechaso
-solicitud_codigo=:codigo,aprobadornom=:aprobadornom,aprobadorape=:aprobadorape,solicitud_estado=:estadosol,fecha_aprobación=:fechaapro,motivo=:motivo,documento=:documento WHERE solicitud_id=:id");
+$actualizar_solicitud = $actualizar_solicitud->prepare("UPDATE solicitudbaja SET solicitadornom=:solicitadornom,solicitadorape=:solicitadorape,activo_id=:activoid,fecha_solicitud=:fechaso,
+solicitud_codigo=:codigo,aprobadornom=:aprobadornom,aprobadorape=:aprobadorape,estadosolicitud_id=:estadosol,fecha_aprobacion=:fechaapro,motivo=:motivo WHERE solicitud_id=:id");
 
 $marcadores = [
     ":solicitadornom" => $solicitadornom,
@@ -116,12 +116,12 @@ $marcadores = [
     ":activoid" => $activoid,
     ":fechaso" => $fechaso,
     ":codigo" => $codigo,
-    ":aprobadornom" => $aprobadornom,
-    ":aprobadorape" => $aprobadorape,
+    ":aprobadornom" => $nombreapro,
+    ":aprobadorape" => $apellidoapro,
     ":estadosol" => $estadosol,
     ":fechaapro" => $fechaapro,
     ":motivo" => $motivo,
-    ":documento" => $documento,
+    // ":documento" => $documento,
     ":id"=> $id
 ];
 

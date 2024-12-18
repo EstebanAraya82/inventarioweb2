@@ -10,16 +10,16 @@ $tipoBaja = limpiar_cadena($_POST['solicitudbaja_tipobaja']);
 $activoid = limpiar_cadena($_POST['solicitudbaja_activo']);
 $fechaso = limpiar_cadena($_POST['fecha_solicitud']);
 $codigo = limpiar_cadena($_POST['solicitud_codigo']);
-$nombreapro = limpiar_cadena($_POST['aprobador_nombre']);
-$apellidoapro = limpiar_cadena($_POST['aprobador_apellido']);
+// $nombreapro = limpiar_cadena($_POST['aprobador_nombre']);
+// $apellidoapro = limpiar_cadena($_POST['aprobador_apellido']);
 //$estadosol = limpiar_cadena($_POST['solicitud_estado']);
 $estadosol = limpiar_cadena($_POST['solicitudbaja_estadosolicitud']);
-$fechaapro = limpiar_cadena($_POST['fecha_aprobacion']);
+// $fechaapro = limpiar_cadena($_POST['fecha_aprobacion']);
 $motivo = limpiar_cadena($_POST['motivo']);
 $documento = limpiar_cadena($_FILES['documento']['name']);
 
 /* Verificación de datos obligatorios */
-if ($solicitadornom == "" || $solicitadorape == "" || $activoid == "" || $fechaso == "" || $codigo == "" || $estadosol == "" || $motivo == "" || $documento == "") {
+if ($solicitadornom == "" || $solicitadorape == "" || $activoid == "" || $fechaso == "" || $codigo == "" || $estadosol == "" || $motivo == "") {
   echo '
     <div class="notification is-danger is-light">
   <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
@@ -95,8 +95,8 @@ if (verificar_datos("[0-9]{3,300}", $codigo)) {
 
 /* Guardando datos */
 $guardar_solicitud = conexion();
-$guardar_solicitud = $guardar_solicitud->prepare("INSERT INTO solicitudbaja (solicitud_codigo,solicitadornom,solicitadorape,activo_id,fecha_solicitud,estadosolicitud_id,motivo, aprobadornom, aprobadorape, tipobaja_id,documento, fecha_aprobacion)
-    VALUES(:codigo,:solicitadornom,:solicitadorape,:activoid,:fechaso,:estadosol,:motivo,:aprobadornom, :aprobadorape, :tipobaja_id,:documento, :fechaapro)");
+$guardar_solicitud = $guardar_solicitud->prepare("INSERT INTO solicitudbaja (solicitud_codigo,solicitadornom,solicitadorape,activo_id,fecha_solicitud,estadosolicitud_id,motivo, tipobaja_id,documento)
+    VALUES(:codigo,:solicitadornom,:solicitadorape,:activoid,:fechaso,:estadosol,:motivo, :tipobaja_id,:documento)");
 
 $target = '../documents/'.$_FILES['documento']['name'];
 move_uploaded_file($_FILES['documento']['tmp_name'], $target);
@@ -108,10 +108,10 @@ $marcadores = [
   ":activoid" => $activoid,
   ":fechaso" => $fechaso,
   ":codigo" => $codigo,
-  ":aprobadornom" => $nombreapro,
-  ":aprobadorape" => $apellidoapro,
+  // ":aprobadornom" => $nombreapro,
+  // ":aprobadorape" => $apellidoapro,
   ":estadosol" => $estadosol,
-  ":fechaapro" => $fechaapro,
+  // ":fechaapro" => $fechaapro,
   ":motivo" => $motivo,
   ":documento" => $documento,
   ":tipobaja_id" => $tipoBaja

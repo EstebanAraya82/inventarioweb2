@@ -2,24 +2,63 @@
 $inicio = ($pagina > 0) ? (($pagina * $registros) - $registros) : 0;
 $tabla = "";
 
-$campos="solicitudbaja.solicitadornom,solicitudbaja.solicitadorape,solicitudbaja.activo_id,solicitudbaja.fecha_solicitud,solicitudbaja.solicitud_codigo,solicitudbaja.aprobadornom,solicitudbaja.aprobadorape,solicitudbaja.solicitud_estado,solicitudbaja.fecha_aprobacion,solicitudbaja.motivo,solicitudbaja.documento,activo.activo_id";
+$campos = "solicitudbaja.solicitud_id,
+solicitudbaja.solicitadornom,
+solicitudbaja.solicitadorape,
+solicitudbaja.activo_id,
+solicitudbaja.fecha_solicitud,
+solicitudbaja.solicitud_codigo,
+solicitudbaja.aprobadornom,
+solicitudbaja.aprobadorape,
+solicitudbaja.estadosolicitud_id,
+solicitudbaja.fecha_aprobacion,
+solicitudbaja.motivo,
+solicitudbaja.documento,
+activo.activo_id,
+activo.activo_codigo,
+estadosolicitud.estadosolicitud_id,
+estadosolicitud.estadosolicitud_nombre";
 
 if (isset($busqueda) && $busqueda != "") {
-	$consulta_datos = "SELECT $campos FROM solicitudbaja INNER JOIN activo On solicitudbaja.activo_id=activo.activo_id where solicitudbaja.solicitud_codigo Like '$busqueda%' Or solicitudbaja.solicitadornom Like '$busqueda%' Or solicitudbaja.solicitadorape Like '$busqueda%' Or solicitudbaja.fecha_solicitud Like '$busqueda%' Or solicitudbaja.solicitud_aprobadornom Like '$busqueda%' Or solicitudbaja.aprobadorape Like '$busqueda%' Or solicitudbaja.solicitud_estado Like '$busqueda%' Or solicitudbaja.fecha_aprobacion Like '$busqueda%' Or solicitudbaja.motivo Like '$busqueda%' Or solicitudbaja.documento Like '$busqueda%' Order By solicitudbaja.solicitud_codigo Asc Limit $inicio,$registros";
+	$consulta_datos = "SELECT $campos FROM solicitudbaja 
+	INNER JOIN activo On solicitudbaja.activo_id=activo.activo_id 
+	INNER JOIN estadosolicitud On solicitudbaja.estadosolicitud_id=estadosolicitud.estadosolicitud_id 
+	where solicitudbaja.solicitud_codigo Like '$busqueda%' 
+	Or solicitudbaja.solicitadornom Like '$busqueda%' 
+	Or solicitudbaja.solicitadorape Like '$busqueda%' 
+	Or solicitudbaja.fecha_solicitud Like '$busqueda%' 
+	Or solicitudbaja.aprobadornom Like '$busqueda%' 
+	Or solicitudbaja.aprobadorape Like '$busqueda%' 
+	Or solicitudbaja.fecha_aprobacion Like '$busqueda%' 
+	Or solicitudbaja.motivo Like '$busqueda%' 
+	Or solicitudbaja.documento Like '$busqueda%' 
+	Order By solicitudbaja.solicitud_codigo Asc Limit $inicio,$registros";
 
 	$consulta_total = "SELECT COUNT(solicitud_id) FROM solicitudbaja where solicitud_codigo Like '%$busqueda%'";
-
 } elseif ($activo_id > 0) {
 
-	$consulta_datos = "SELECT $campos FROM solicitudbaja INNER JOIN activo ON solicitudbaja.activo_id=activo.activo_id WHERE solicitudbaja.activo_id='$activo_id' ORDER BY solicitudbaja.solicitud_codigo ASC LIMIT $inicio,$registros";
+	$consulta_datos = "SELECT $campos FROM solicitudbaja 
+	INNER JOIN activo On solicitudbaja.activo_id=activo.activo_id 
+	INNER JOIN estadosolicitud On solicitudbaja.estadosolicitud_id=estadosolicitud.estadosolicitud_id 
+	 WHERE solicitudbaja.activo_id='$activo_id' ORDER BY solicitudbaja.solicitud_codigo ASC LIMIT $inicio,$registros";
 
 	$consulta_total = "SELECT COUNT(solicitud_id) FROM solicitudbaja WHERE activo_id='$activo_id'";
+} elseif ($estadosolicitud_id > 0) {
 
-}else{
+	$consulta_datos = "SELECT $campos FROM solicitudbaja 
+	INNER JOIN activo On solicitudbaja.activo_id=activo.activo_id 
+	INNER JOIN estadosolicitud On solicitudbaja.estadosolicitud_id=estadosolicitud.estadosolicitud_id 
+	 WHERE solicitudbaja.activo_id='$activo_id' ORDER BY solicitudbaja.solicitud_codigo ASC LIMIT $inicio,$registros";
 
-	$consulta_datos="SELECT $campos FROM solicitudbaja INNER JOIN activo On solicitudbaja.activo_id=activo.activo_id Order By solicitudbaja.solicitud_codigo Asc Limit $inicio,$registros";
+	$consulta_total = "SELECT COUNT(solicitud_id) FROM solicitudbaja WHERE estadosolicitud_id='$estadosolicitud_id'";
+} else {
 
-		$consulta_total="SELECT COUNT(solicitud_id) FROM solicitudbaja";
+	$consulta_datos = "SELECT $campos FROM solicitudbaja 
+	INNER JOIN activo On solicitudbaja.activo_id=activo.activo_id 
+	INNER JOIN estadosolicitud On solicitudbaja.estadosolicitud_id=estadosolicitud.estadosolicitud_id 
+	Order By solicitudbaja.solicitud_codigo Asc Limit $inicio,$registros";
+
+	$consulta_total = "SELECT COUNT(solicitud_id) FROM solicitudbaja";
 }
 
 $conexion = conexion();
@@ -63,12 +102,12 @@ if ($total >= 1 && $pagina <= $Npaginas) {
 					<td>' . $contador . '</td>
 					<td>' . $rows['solicitud_codigo'] . '</td>
                     <td>' . $rows['solicitadornom'] . '</td>
-                    <td>' . $rows['asolicitadorape'] . '</td>
-                    <td>' . $rows['activo_id'] . '</td>
+                    <td>' . $rows['solicitadorape'] . '</td>
+                    <td>' . $rows['activo_codigo'] . '</td>
 					<td>' . $rows['fecha_solicitud'] . '</td>
                     <td>' . $rows['aprobadornom'] . '</td>
 					<td>' . $rows['aprobadorape'] . '</td>
-					<td>' . $rows['solicitud_estado'] . '</td>
+					<td>' . $rows['estadosolicitud_nombre'] . '</td>
 					<td>' . $rows['fecha_aprobacion'] . '</td>
 					<td>' . $rows['motivo'] . '</td>
 					

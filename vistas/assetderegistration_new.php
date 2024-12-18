@@ -67,7 +67,7 @@
                 </div>
             </div>
            
-            <div class="columns">
+            <!-- <div class="columns">
                 <div class="column">
                     <div class="control">
                         <label>Nombre aprobador</label>
@@ -82,7 +82,7 @@
                             pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,50}" maxlength="50" required>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="columns">
                 <div class="column">
@@ -123,12 +123,12 @@
                         </select>
                     </div>
                 </div>
-                <div class="column">
+                <!-- <div class="column">
                     <div class="control">
                         <label>Fecha de aprobación</label>
                         <input class="input" type="date" name="fecha_aprobacion" placeholder="Ingrese fecha" required>
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <div class="columns is-centered">
@@ -138,7 +138,7 @@
                         <textarea class="textarea" name="motivo" placeholder="Ingrese observaciones relacionadas a la solicitud" rows="4"></textarea>
                     </div>
                 </div>
-                <div>
+                <div class='column'>
                     <div class="columns is-centered">
                     <div class="column is-half has-text-centered">
                         <label class="label">Adjuntar documento para la baja de activo</label>
@@ -173,7 +173,7 @@
                 // Mostrar el nombre del archivo seleccionado
                 const fileInput = document.getElementById("documento");
                 const fileName = document.getElementById("file-name");
-
+                
                 fileInput.addEventListener("change", function() {
                     const file = fileInput.files[0];
                     if (file) {
@@ -183,7 +183,17 @@
                     }
                 });
             </script>
-
+            <script>
+                const $tipoBaja = document.querySelector(`select[name*='solicitudbaja_tipobaja']`);
+                $tipoBaja.onchange = ({target})=>{
+                const { value } = target;
+                const $inputFile = document.querySelector('#documento');
+                if(value != 1)
+                    $inputFile.required = true;
+                else
+                    $inputFile.required = false;
+                }
+            </script>
 
             
         </form>
