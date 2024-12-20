@@ -18,8 +18,8 @@
     }
 
     $activo_id = (isset($_GET['activo_id'])) ?  $_GET['activo_id'] : 0;
-
-
+    $estadosolicitud_id = (isset($_GET['estadosolicitud_id'])) ?  $_GET['estadosolicitud_id'] : 0;
+    
 
     $pagina = limpiar_cadena($pagina);
     $url = "index.php?vista=assetderegistration_list&page=";

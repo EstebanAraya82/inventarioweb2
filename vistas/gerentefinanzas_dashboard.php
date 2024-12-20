@@ -1,41 +1,63 @@
 <?php
+// Iniciar la sesión si aún no está activa
 if (session_status() == PHP_SESSION_NONE) {
-    session_start(); // Solo inicia la sesión si no está ya activa
+    session_start();
 }
+
+// Verificar si el usuario no está logueado o si el rol es de administrador (rol_id == 1), redirigir a login
 if (!isset($_SESSION['id']) || $_SESSION['rol_id'] == 1) {
-    header("Location: login.php"); // Si el usuario no está logueado o es admin, lo redirige al login
+    header("Location: login.php");
     exit();
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Usuario</title>
-    <link rel="stylesheet" href="path_to_your_css_file.css"> <!-- Cambia esta ruta a tu archivo CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Para íconos de Font Awesome -->
+
 </head>
+
 <body>
-    <!-- Barra de navegación -->
-    <nav class="navbar">
-    <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">Solicitud de baja</a>    
-               <div class="navbar-dropdown">
-                    <a class="navbar-item" href="index.php?vista=assetderegistration_new"> Nueva solicitud</a>
-                    <a class="navbar-item" href="index.php?vista=assetderegistration_list">Lista de solicitudes</a>
-                    <a class="navbar-item" href="index.php?vista=assetderegistration_search">Buscar solicitud</a>
-                   </div>               
-            </div>  
-             </nav>
+
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="index.php?vista=gerentefinanzas_dashboard">
+                <img src="./img/logo.png" width="60" height="28" alt="Logo">
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+
+                <!-- Menú de solicitud de baja de activos -->
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">Solicitud de baja</a>
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="index.php?vista=assetderegistration_list">Lista de solicitudes</a>
+                        <a class="navbar-item" href="index.php?vista=assetderegistration_search">Buscar solicitud</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <a href="index.php?vista=logout" class="button is-link is-rounded">Salir</a>
+    </nav>
 
     <!-- Contenido principal -->
     <div class="main-content">
-        <h3>Bienvenido, <?php echo $_SESSION['nombre'] . " " . $_SESSION['apellido']; ?></h3>
-        <p>Desde aquí puedes gestionar tus datos y consultar el inventario.</p>
-     
+        <h3 class="title is-3">Bienvenido, <?php echo $_SESSION['nombre'] . " " . $_SESSION['apellido']; ?></h3>
+        <p class="is-size-4">Este es tu panel</p>
+    </div>
 
-   
 </body>
+
 </html>

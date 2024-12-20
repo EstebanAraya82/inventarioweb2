@@ -87,6 +87,14 @@ if (!isset($_SESSION['id']) || $_SESSION['rol_id'] != 1) {
                         <a class="navbar-item" href="index.php?vista=sector_search">Buscar</a>
                     </div>
                 </div>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">Solicitud de baja</a>
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="index.php?vista=assetderegistration_list">Lista de solicitudes</a>
+                        <a class="navbar-item" href="index.php?vista=requeststatus_list">Estado de solicitudes</a>
+                        <a class="navbar-item" href="index.php?vista=assetderegistration_search">Buscar solicitud</a>
+                    </div>
+                </div>
             </div>
         </div>
 

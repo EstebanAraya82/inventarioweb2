@@ -12,6 +12,7 @@
 	<div class="form-rest mb-6 mt-6"></div>
 
 	<form action="./php/activo_guardar.php" method="POST" class="FormularioAjax" autocomplete="off" enctype="multipart/form_data">
+		
 		<div class="columns">
 			<div class="column">
 				<div class="control">
@@ -22,7 +23,7 @@
 			<div class="column">
 				<div class="control">
 					<label>Marca</label>
-					<input class="input" type="int" name="activo_marca" placeholder="Ingrese dato" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ]{2,50}" maxlength="50" required>
+					<input class="input" type="int" name="activo_marca" placeholder="Ingrese dato" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{2,50}" maxlength="50" required>
 				</div>
 			</div>
 		</div>
@@ -30,7 +31,7 @@
 			<div class="column">
 				<div class="control">
 					<label>Modelo</label>
-					<input class="input" type="text" name="activo_modelo" placeholder="Ingrese dato" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]{2,50}" maxlength="50" required>
+					<input class="input" type="text" name="activo_modelo" placeholder="Ingrese dato" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{2,50}" maxlength="50" required>
 				</div>
 			</div>
 			<div class="column">
@@ -150,7 +151,7 @@
 			<div class="column">
 				<label>Estado</label><br>
 				<div class="select is-rounded">
-					<select name="activo_estadoactivo">
+					<select name="activo_estado">
 						<option value="" selected="">Seleccione una opción</option>
 						<?php
 						$estadoactivos = conexion();

@@ -17,7 +17,7 @@
         <div class="columns">
             <div class="column">
                 <form action="" method="POST" autocomplete="off">
-                    <input type="hidden" name="modulo_buscador" value="bajaactivo">
+                    <input type="hidden" name="modulo_buscador" value="solicitudbaja">
                     <div class="field is-grouped">
                         <p class="control is-expanded">
                             <input class="input is-rounded" type="text" name="txt_buscador" placeholder="¿Qué estas buscando?"
@@ -34,8 +34,8 @@
         <div class="columns">
             <div class="column">
                 <form class="has-text-centered mt-6 mb-6" action="" method="POST" autocomplete="off">
-                    <input type="hidden" name="modulo_buscador" value="bajaactivo">
-                    <input type="hidden" name="eliminar_buscador" value="bajaactivo">
+                    <input type="hidden" name="modulo_buscador" value="solicitudbaja">
+                    <input type="hidden" name="eliminar_buscador" value="solicitudbaja">
                     <p>Estas buscando <strong>“<?php echo $_SESSION['busqueda_bajaactivo']; ?>”</strong></p>
                     <br>
                     <button type="submit" class="button is-danger is-rounded">Eliminar busqueda</button>
@@ -53,7 +53,9 @@
             }
         }
 
-        $activo_id = (isset($_GET['activo_id'])) ? $_GET['activo_id'] : 0; 
+        //activo_id = (isset($_GET['activo_id'])) ? $_GET['activo_id'] : 0; 
+        //$estadosolicitud_id = (isset($_GET['estadosolicitud_id'])) ? $_GET['estadosolicitud_id'] : 0; 
+        //$tipobaja_id = (isset($_GET['tipobaja_id'])) ? $_GET['tipobaja_id'] : 0; 
        
         $pagina = limpiar_cadena($pagina);
         $url = "index.php?vista=assetderegistration_search&page=";

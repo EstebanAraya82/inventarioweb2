@@ -25,7 +25,7 @@
                 </div>
                 <div class="column">
                     <div class="control">
-                        <label>Nombre solicitante</label>
+                        <label>Apellido solicitante</label>
                         <input class="input" type="text" name="usuario_apellido" placeholder="Ingrese apellido"
                             pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,50}" maxlength="50" required
                             value="<?php echo isset($_SESSION['usuario_apellido']) ? $_SESSION['usuario_apellido'] : ''; ?>">
@@ -67,7 +67,7 @@
                 </div>
             </div>
            
-            <div class="columns">
+            <!-- <div class="columns">
                 <div class="column">
                     <div class="control">
                         <label>Nombre aprobador</label>
@@ -82,7 +82,7 @@
                             pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,50}" maxlength="50" required>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="columns">
                 <div class="column">
@@ -123,12 +123,12 @@
                         </select>
                     </div>
                 </div>
-                <div class="column">
+                <!-- <div class="column">
                     <div class="control">
                         <label>Fecha de aprobación</label>
                         <input class="input" type="date" name="fecha_aprobacion" placeholder="Ingrese fecha" required>
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <div class="columns is-centered">
@@ -138,10 +138,8 @@
                         <textarea class="textarea" name="motivo" placeholder="Ingrese observaciones relacionadas a la solicitud" rows="4"></textarea>
                     </div>
                 </div>
-            </div>
-
-            <form action="/ruta-del-backend" method="POST" enctype="multipart/form-data">
-                <div class="columns is-centered">
+                <div class='column'>
+                    <div class="columns is-centered">
                     <div class="column is-half has-text-centered">
                         <label class="label">Adjuntar documento para la baja de activo</label>
                         <div class="file has-name is-centered is-primary">
@@ -156,17 +154,26 @@
                                 <span class="file-name" id="file-name">No se ha subido ningún archivo</span>
                             </label>
                         </div>
+                    </div>
+                </div>
+                </div>
                 
 
+                <p class="has-text-centered">
+                    <button type="submit" class="button is-info is-rounded">Guardar</button>
+                </p>
 
+            </div>
 
-            </form>
+            <!-- <form action="/ruta-del-backend" method="POST" enctype="multipart/form-data">
+                
+            </form> -->
 
             <script>
                 // Mostrar el nombre del archivo seleccionado
                 const fileInput = document.getElementById("documento");
                 const fileName = document.getElementById("file-name");
-
+                
                 fileInput.addEventListener("change", function() {
                     const file = fileInput.files[0];
                     if (file) {
@@ -176,12 +183,18 @@
                     }
                 });
             </script>
-                </div>
-                </div>
+            <script>
+                const $tipoBaja = document.querySelector(`select[name*='solicitudbaja_tipobaja']`);
+                $tipoBaja.onchange = ({target})=>{
+                const { value } = target;
+                const $inputFile = document.querySelector('#documento');
+                if(value != 1)
+                    $inputFile.required = true;
+                else
+                    $inputFile.required = false;
+                }
+            </script>
 
-
-            <p class="has-text-centered">
-                <button type="submit" class="button is-info is-rounded">Guardar</button>
-            </p>
+            
         </form>
     </div>
