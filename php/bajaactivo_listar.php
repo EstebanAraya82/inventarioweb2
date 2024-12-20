@@ -150,6 +150,6 @@ if ($total > 1 && $pagina <= $Npaginas) {
 $conexion = null;
 echo $tabla;
 
-if ($total >= 1 && $pagina <= $Npaginas) {
-    echo paginador_tablas($pagina, $Npaginas, $url, 7);
+if($total>=1 && $pagina<=$Npaginas){
+    echo paginador_tablas($pagina,$Npaginas,$url,7);
 }
