@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-12-2024 a las 03:12:40
+-- Tiempo de generación: 20-12-2024 a las 03:44:45
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -49,7 +49,10 @@ CREATE TABLE `activo` (
 --
 
 INSERT INTO `activo` (`activo_id`, `activo_codigo`, `activo_marca`, `activo_modelo`, `activo_serial`, `categoria_id`, `piso_id`, `posicion_id`, `area_id`, `sector_id`, `estadoactivo_id`, `fecha_ingreso`) VALUES
-(1, '11163', 'ViewSonic', 'VG2233Smh', 'TBX153431018', 2, 1, 1, 1, 1, 1, '0000-00-00');
+(1, '11163', 'ViewSonic', 'VG2233Smh', 'TBX153431018', 2, 2, 13, 1, 3, 1, '0000-00-00'),
+(2, '18150', 'HP', '400G3', 'MXL6141YXZ', 1, 2, 13, 1, 3, 7, '2024-01-22'),
+(4, '1111111', 'Lenovo', 'Thinkpad', 'SDJASJDK', 3, 1, 1, 7, 1, 7, '2024-12-18'),
+(5, '22222222', 'Apple', 'McBook', 'DKADLAS', 3, 4, 8, 3, 7, 1, '2024-12-18');
 
 -- --------------------------------------------------------
 
@@ -72,7 +75,8 @@ INSERT INTO `area` (`area_id`, `area_nombre`) VALUES
 (3, 'Redes'),
 (4, 'Servidores'),
 (5, 'Telefonía'),
-(6, 'Infraestructura');
+(6, 'Infraestructura'),
+(7, 'Administrador');
 
 -- --------------------------------------------------------
 
@@ -181,7 +185,12 @@ CREATE TABLE `piso` (
 
 INSERT INTO `piso` (`piso_id`, `piso_numero`) VALUES
 (1, '-1'),
-(2, '1');
+(2, '1'),
+(4, '2'),
+(5, '3'),
+(6, '4'),
+(7, '5'),
+(8, '7');
 
 -- --------------------------------------------------------
 
@@ -199,7 +208,25 @@ CREATE TABLE `posicion` (
 --
 
 INSERT INTO `posicion` (`posicion_id`, `posicion_posicion`) VALUES
-(1, 'N-A');
+(1, 'N-A'),
+(2, 'A-01'),
+(3, 'A-02'),
+(4, 'A-03'),
+(5, 'A-04'),
+(6, 'A-05'),
+(7, 'A-06'),
+(8, 'A-07'),
+(9, 'A-08'),
+(10, 'A-09'),
+(11, 'A-10'),
+(12, 'B-01'),
+(13, 'B-02'),
+(14, 'B-03'),
+(15, 'B-04'),
+(16, 'B-05'),
+(17, 'B-06'),
+(18, 'B-07'),
+(19, 'B-08');
 
 -- --------------------------------------------------------
 
@@ -239,7 +266,14 @@ CREATE TABLE `sector` (
 
 INSERT INTO `sector` (`sector_id`, `sector_nombre`) VALUES
 (1, 'Bodega'),
-(2, 'Guardias');
+(2, 'Guardias'),
+(3, 'Transbank'),
+(4, 'VTR'),
+(5, 'WOM'),
+(6, 'Consalud'),
+(7, 'Walmart'),
+(8, 'Data Center'),
+(9, 'Gerencia');
 
 -- --------------------------------------------------------
 
@@ -262,6 +296,14 @@ CREATE TABLE `solicitudbaja` (
   `motivo` varchar(255) NOT NULL,
   `documento` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `solicitudbaja`
+--
+
+INSERT INTO `solicitudbaja` (`solicitud_id`, `solicitadornom`, `solicitadorape`, `activo_id`, `fecha_solicitud`, `solicitud_codigo`, `aprobadornom`, `aprobadorape`, `estadosolicitud_id`, `tipobaja_id`, `fecha_aprobacion`, `motivo`, `documento`) VALUES
+(2, 'Cristóbal', 'Curimil', 5, '2024-12-18 00:00:00', '1111111', 'Sebastian', 'ruiz', 1, 1, '2024-12-18 00:00:00', 'Desuso', ''),
+(3, 'Cristóbal', 'Curimil', 4, '2024-12-18 00:00:00', '1111112', 'Sebastian', 'Ruiz', 3, 2, '2024-12-18 00:00:00', 'Se rechaza por no contar timbre de carabineros', 'CARABINEROS DE CHILE.docx');
 
 -- --------------------------------------------------------
 
@@ -305,10 +347,14 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`usuario_id`, `usuario_nombre`, `usuario_apellido`, `usuario_usuario`, `usuario_correo`, `usuario_clave`, `rol_id`, `area_id`, `estadousuario_id`) VALUES
-(4, 'José', 'Avendaño', 'avendano.5@nlsa.teleperformance.com', 'jose.avendano@teleperformance.com', '$2y$10$WX8h8UQrX2HTRKoT6xuR0ubPOQRalBeZzRoTKvlItMGHF1.oUIVdq', 3, 2, 1),
+(4, 'José', 'Avendaño', 'avendano.5@nlsa.teleperformance.com', 'jose.avendano@teleperformance.com', '$2y$10$WX8h8UQrX2HTRKoT6xuR0ubPOQRalBeZzRoTKvlItMGHF1.oUIVdq', 2, 6, 1),
 (5, 'Administrador', '', 'administrador', '', '$2y$10$EqR0G5YIxgPd2hrcdLpdtu2CPBBX7sZLnRNBl6swfaJFLSluwukFq', 1, 1, 1),
 (6, 'Cristobal', 'Curimil', 'curimil.10@nlsa.teleperformance.com', 'cristobal.curimil@teleperformance.cl', '$2y$10$rH9s4VAqw99WdmMWMbfC5uJNOww4Ddg1s0QpKzCwFj9wyhmjeNNre', 2, 1, 1),
-(7, 'Sebastian', 'Ruiz', 'ruiz.6@nlsa.teleperformance.com', 'sebastian.ruiz@teleperformance.com', '$2y$10$H5jjgc/fdyFnQU/sLAad/.htimHQ0zNxZ8CbJpUuE5hUISn5Bdjhu', 4, 2, 1);
+(7, 'Sebastian', 'Ruiz', 'ruiz.6@nlsa.teleperformance.com', 'sebastian.ruiz@teleperformance.com', '$2y$10$H5jjgc/fdyFnQU/sLAad/.htimHQ0zNxZ8CbJpUuE5hUISn5Bdjhu', 4, 2, 1),
+(8, 'Jennifer', 'Perez', 'perez.6@nlsa.teleperformance.com', 'jennifer.perez@teleperformance.cl', '$2y$10$zMH9JO5wSSzHAXUFw0KuAOPeJRldkgHjOu3hN2ZcNpffyBkR3zr22', 2, 4, 1),
+(9, 'Susana', 'Valenzuela', 'valenzuela.5@nlsa.teleperformance.com', 'susana.valenzuela@teleperformance.cl', '$2y$10$wW6r4gbfarjb/lnywntVV.HcIx.6CPiMYX8.lBguhCaDIjhTfrsWe', 2, 4, 1),
+(10, 'Esteban', 'Araya', 'araya.5@nlsa.teleperformance.com', 'esteban.araya@teleperformance.com', '$2y$10$T1zxYW7Ok8yzYoB70NhKweyPDFEhar7oS7IPXdn5ArVihMHZqalIm', 1, 7, 1),
+(11, 'Patricio', 'Jerez', 'jerez.5@nlsa.teleperformance.com', 'patricio.jerez@teleperformance.cl', '$2y$10$RAST0yCnql4QoUwuY7pruOGQtd8ZqA/Uewk8Z6aRv546xU8ni6sF2', 2, 1, 1);
 
 --
 -- Índices para tablas volcadas
@@ -413,13 +459,13 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `activo`
 --
 ALTER TABLE `activo`
-  MODIFY `activo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `activo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `area`
 --
 ALTER TABLE `area`
-  MODIFY `area_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `area_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `categoria`
@@ -449,13 +495,13 @@ ALTER TABLE `estadousuario`
 -- AUTO_INCREMENT de la tabla `piso`
 --
 ALTER TABLE `piso`
-  MODIFY `piso_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `piso_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `posicion`
 --
 ALTER TABLE `posicion`
-  MODIFY `posicion_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `posicion_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
@@ -467,13 +513,13 @@ ALTER TABLE `rol`
 -- AUTO_INCREMENT de la tabla `sector`
 --
 ALTER TABLE `sector`
-  MODIFY `sector_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `sector_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `solicitudbaja`
 --
 ALTER TABLE `solicitudbaja`
-  MODIFY `solicitud_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `solicitud_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `tipobaja`
@@ -485,7 +531,7 @@ ALTER TABLE `tipobaja`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `usuario_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `usuario_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Restricciones para tablas volcadas
