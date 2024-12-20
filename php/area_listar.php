@@ -34,7 +34,7 @@
                 	<th>#</th>
 					<th>Nombre</th>
                     <th>Activos</th>
-					<th>Usuarios</th>
+					<th>Áreas</th>
                     <th colspan="2">Opciones</th>
                     </tr>
             </thead>

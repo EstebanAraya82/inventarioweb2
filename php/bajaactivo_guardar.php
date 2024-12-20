@@ -2,24 +2,24 @@
 
 /*require_once "../inc/inicio_sesion.php";*/
 require_once "../php/main.php";
-
 /* Almacenamiento de datos */
 $solicitadornom = limpiar_cadena($_POST['usuario_nombre']);
 $solicitadorape = limpiar_cadena($_POST['usuario_apellido']);
-$activoid = limpiar_cadena($_POST['activo_id']);
+$tipoBaja = limpiar_cadena($_POST['solicitudbaja_tipobaja']);
+// $activoid = limpiar_cadena($_POST['activo_id']);
+$activoid = limpiar_cadena($_POST['solicitudbaja_activo']);
 $fechaso = limpiar_cadena($_POST['fecha_solicitud']);
 $codigo = limpiar_cadena($_POST['solicitud_codigo']);
-$nombreapro = limpiar_cadena($_POST['usuario_nombre']);
-$apellidoapro = limpiar_cadena($_POST['usuario_apellido']);
-$estadosol = limpiar_cadena($_POST['solicitud_estado']);
-$fechaapro = limpiar_cadena($_POST['fecha_aprobacion']);
+// $nombreapro = limpiar_cadena($_POST['aprobador_nombre']);
+// $apellidoapro = limpiar_cadena($_POST['aprobador_apellido']);
+//$estadosol = limpiar_cadena($_POST['solicitud_estado']);
+$estadosol = limpiar_cadena($_POST['solicitudbaja_estadosolicitud']);
+// $fechaapro = limpiar_cadena($_POST['fecha_aprobacion']);
 $motivo = limpiar_cadena($_POST['motivo']);
-$documento = limpiar_cadena($_POST['documento']);
-
-
+$documento = limpiar_cadena($_FILES['documento']['name']);
 
 /* Verificación de datos obligatorios */
-if ($solicitadornom == "" || $solicitadorape == "" || $activoid == "" || $fechaso == "" || $codigo == "" || $estadosol == "" || $motivo == "" || $documento == "") {
+if ($solicitadornom == "" || $solicitadorape == "" || $activoid == "" || $fechaso == "" || $codigo == "" || $estadosol == "" || $motivo == "") {
   echo '
     <div class="notification is-danger is-light">
   <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
@@ -50,12 +50,19 @@ if (verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,50}", $solicitadorape))
 
 /* verificar codigo */
 $check_activo = conexion();
-$check_activo = $check_activo->query("SELECT activo_id From activo where activo_id='$id'");
-if ($check_activo->rowCount() > 0) {
+$check_activo = $check_activo->query("SELECT activo_id From activo where activo_id='$activoid'");
+// if ($check_activo->rowCount() > 0) {
+  if ($check_activo->rowCount() == 0) {
+  // echo '
+  // <div class="notification is-danger is-light">
+  // <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
+  // El Activo Fijo ya esta ingresado
+  // </div>
+  // ';
   echo '
-  <div class="notification is-danger is-light">
+   <div class="notification is-danger is-light">
   <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
-  El Activo Fijo ya esta ingresado
+  El Activo Fijo no esta ingresado
   </div>
   ';
   exit();
@@ -63,18 +70,18 @@ if ($check_activo->rowCount() > 0) {
 $check_activo = null;
 
 /*verificar fecha solicitud */
-$check_fechaso = conexion();
-$check_fechaso = $check_fechaso->query("SELECT fecha_solicitud From solicitudbaja where fecha_solicitud='$fechaso'");
-if ($check_fechaso->rowCount() <= 0) {
-  echo '
-  <div class="notification is-danger is-light">
-  <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
-  la fecha no corresponde
-  </div>
-  ';
-  exit();
-}
-$check_fechaso = null;
+// $check_fechaso = conexion();
+// $check_fechaso = $check_fechaso->query("SELECT fecha_solicitud From solicitudbaja where fecha_solicitud='$fechaso'");
+// if ($check_fechaso->rowCount() <= 0) {
+//   echo '
+//   <div class="notification is-danger is-light">
+//   <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
+//   la fecha no corresponde
+//   </div>
+//   ';
+//   exit();
+// }
+// $check_fechaso = null;
 
 if (verificar_datos("[0-9]{3,300}", $codigo)) {
   echo '
@@ -88,8 +95,11 @@ if (verificar_datos("[0-9]{3,300}", $codigo)) {
 
 /* Guardando datos */
 $guardar_solicitud = conexion();
-$guardar_solicitud = $guardar_solicitud->prepare("INSERT INTO solicitudbaja (solicitud_codigo,solicitadornom,solicitadorape,activo_id,fecha_solicitud,motivo)
-    VALUES(:codigo,:solicitadornom,:solicitadorape,:activoid,:fechaso,:estadosol,:motivo)");
+$guardar_solicitud = $guardar_solicitud->prepare("INSERT INTO solicitudbaja (solicitud_codigo,solicitadornom,solicitadorape,activo_id,fecha_solicitud,estadosolicitud_id,motivo, tipobaja_id,documento)
+    VALUES(:codigo,:solicitadornom,:solicitadorape,:activoid,:fechaso,:estadosol,:motivo, :tipobaja_id,:documento)");
+
+$target = '../documents/'.$_FILES['documento']['name'];
+move_uploaded_file($_FILES['documento']['tmp_name'], $target);
 
 $marcadores = [
 
@@ -98,13 +108,13 @@ $marcadores = [
   ":activoid" => $activoid,
   ":fechaso" => $fechaso,
   ":codigo" => $codigo,
-  ":aprobadornom" => $aprobadornom,
-  ":aprobadorape" => $aprobadorape,
+  // ":aprobadornom" => $nombreapro,
+  // ":aprobadorape" => $apellidoapro,
   ":estadosol" => $estadosol,
-  ":fechaapro" => $fechaapro,
+  // ":fechaapro" => $fechaapro,
   ":motivo" => $motivo,
-  ":documento" => $documento
-
+  ":documento" => $documento,
+  ":tipobaja_id" => $tipoBaja
 ];
 
 $guardar_solicitud->execute($marcadores);

@@ -124,7 +124,7 @@
 
       /* verificar estado usuario */
       $check_estadousuario=conexion();
-      $check_estadousuario=$check_estadousuario->query("SELECT usuario_estado FROM usuario WHERE usuario_estado='$estadousuario'");
+      $check_estadousuario=$check_estadousuario->query("SELECT estadousuario_id FROM estadousuario WHERE estadousuario_id='$estadousuario'");
       if($check_estadousuario->rowCount()<=0){
           echo'
           <div class="notification is-danger is-light">

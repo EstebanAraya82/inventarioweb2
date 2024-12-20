@@ -55,7 +55,7 @@ if (verificar_datos("[0-9]{3,50}", $codigo)) {
     echo '
                 <div class="notification is-danger is-light">
                     <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
-                    El COdigo no coincide con el formato solicitado
+                    El Codigo no coincide con el formato solicitado
                 </div>
             ';
     exit();
@@ -92,16 +92,15 @@ if (verificar_datos("[a-zA-Z0-9]{3,50}", $serial)) {
 }
 
 
-
-if (verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{2,50}", $estadoactivo)) {
-    echo '
-                 <div class="notification is-danger is-light">
-                     <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
-                      El sector no coincide con el formato solicitado
-                </div>
-            ';
-    exit();
-}
+// if (verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{2,50}", $sector)) {
+//     echo '
+//                  <div class="notification is-danger is-light">
+//                      <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
+//                       El sector no coincide con el formato solicitado
+//                 </div>
+//             ';
+//     exit();
+// }
 
 
 /* Verificando categoria */
@@ -185,9 +184,9 @@ if ($sector != $datos['sector_id']) {
 }
 
 /* Verificando estado activo */
-if ($estadoactivo != $datos['activo_estado']) {
+if ($estadoactivo != $datos['estadoactivo_id']) {
     $check_estadoactivo = conexion();
-    $check_estadoactivo = $check_estadoactivo->query("SELECT activo_estado FROM activo WHERE activo_estado='$estadoactivo'");
+    $check_estadoactivo = $check_estadoactivo->query("SELECT estadoactivo_id FROM estadoactivo WHERE estadoactivo_id='$estadoactivo'");
     if ($check_estadoactivo->rowCount() <= 0) {
         echo '
 	            <div class="notification is-danger is-light">
@@ -206,8 +205,8 @@ if ($estadoactivo != $datos['activo_estado']) {
 
 /* Actualizando datos */
 $actualizar_activo = conexion();
-$actualizar_activo = $actualizar_activo->prepare("UPDATE activo SET activo_codigo=:codigo,activo_marca=:marca,activo_modelo=:modelo,activo_serial=:serial,activo_categoria=:categoria
-    activo_piso=:piso,activo_posicion=:posicion,activo_area=:area,activo_sector=:sector,activo_estado=:estadoactivo WHERE activo_id=:id");
+$actualizar_activo = $actualizar_activo->prepare("UPDATE activo SET activo_codigo=:codigo,activo_marca=:marca,activo_modelo=:modelo,activo_serial=:serial,categoria_id=:categoria,
+    piso_id=:piso,posicion_id=:posicion,area_id=:area,sector_id=:sector,estadoactivo_id=:estadoactivo WHERE activo_id=:id");
 
 $marcadores = [
     ":codigo" => $codigo,

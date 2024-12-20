@@ -1,53 +1,26 @@
 <?php
-// Incluir la librería de PhpSpreadsheet
-require 'vendor/autoload.php'; // Asegúrate de que esta ruta apunte correctamente a tu archivo autoload.php de Composer
+require_once "./php/main.php";
 
-// Conexión a la base de datos
-require_once './main.php';
+// Definir el encabezado del archivo CSV
+header('Content-Type: text/csv');
+header('Content-Disposition: attachment; filename="reporte_activos.csv"');
 
-// Cargar la librería de PhpSpreadsheet
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+// Abrir el archivo para escribir
+$output = fopen('php://output', 'w');
 
-// Crear una nueva instancia de Spreadsheet
-$spreadsheet = new Spreadsheet();
-$sheet = $spreadsheet->getActiveSheet();
+// Escribir el encabezado del archivo CSV
+fputcsv($output, ['ID', 'Nombre', 'Categoría', 'Piso', 'Área', 'Sector', 'Posición']);
 
-// Establecer el título y los encabezados de las columnas
-$sheet->setCellValue('A1', 'ID Activo');
-$sheet->setCellValue('B1', 'Nombre');
-$sheet->setCellValue('C1', 'Categoria');
-$sheet->setCellValue('D1', 'Piso');
-$sheet->setCellValue('E1', 'Posicion');
+// Obtener los datos de los activos (esto depende de cómo tengas organizada la base de datos)
+$sql = "SELECT id, nombre, categoria, piso, area, sector, posicion FROM activos";
+$result = mysqli_query($conn, $sql);
 
-// Realizar la consulta para obtener los datos de los activos
-$query = "SELECT * FROM activos";  // Ajusta esta consulta según tus necesidades
-$resultado = mysqli_query($conn, $query);
-
-// Si la consulta devuelve resultados, rellenamos el archivo Excel con los datos
-if ($resultado && mysqli_num_rows($resultado) > 0) {
-    $rowIndex = 2; // Comenzamos desde la fila 2, ya que la fila 1 tiene los encabezados
-
-    // Iterar sobre los resultados y escribir cada fila en el archivo Excel
-    while ($row = mysqli_fetch_assoc($resultado)) {
-        $sheet->setCellValue('A' . $rowIndex, $row['id']); // Suponiendo que tienes una columna 'id' en la base de datos
-        $sheet->setCellValue('B' . $rowIndex, $row['nombre']);
-        $sheet->setCellValue('C' . $rowIndex, $row['categoria']);
-        $sheet->setCellValue('D' . $rowIndex, $row['piso']);
-        $sheet->setCellValue('E' . $rowIndex, $row['posicion']);
-        $rowIndex++;
-    }
-} else {
-    echo 'No hay datos para generar el reporte.';
+// Escribir los datos de cada activo en el archivo CSV
+while ($row = mysqli_fetch_assoc($result)) {
+    fputcsv($output, $row);
 }
 
-// Establecer los encabezados HTTP para la descarga del archivo Excel
-header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;filename="reporte_activos.xlsx"');
-header('Cache-Control: max-age=0');
-
-// Crear el escritor y enviar el archivo al navegador
-$writer->save('php://output');
-
-// Cerrar la conexión a la base de datos
-mysqli_close($conn);
+// Cerrar el archivo
+fclose($output);
+exit();
+?>

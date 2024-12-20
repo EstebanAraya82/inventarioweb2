@@ -1,5 +1,5 @@
 <?php
-$inicio = ($pagina>0) ? (($pagina * $registros)-$registros) : 0;
+	$inicio = ($pagina>0) ? (($pagina * $registros)-$registros) : 0;
 	$tabla="";
 
 	if(isset($busqueda) && $busqueda!=""){

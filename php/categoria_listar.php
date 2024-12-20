@@ -12,8 +12,7 @@
 
 		$consulta_datos="SELECT * FROM categoria ORDER BY categoria_nombre ASC LIMIT $inicio,$registros";
 
-		$consulta_total="SELECT COUNT(categoria_id) FROM categoria";
-		
+		$consulta_total="SELECT COUNT(categoria_id) FROM categoria";		
 	}
 
 	$conexion=conexion();
@@ -34,6 +33,7 @@
                 	<th>#</th>
                     <th>Nombre</th>
 					<th>Activos</th>
+                    <th colspan="2">Opciones</th>
                     </tr>
             </thead>
             <tbody>
@@ -50,7 +50,10 @@
                     <td>
                         <a href="index.php?vista=asset_list&categoria_id='.$rows['categoria_id'].'" class="button is-link is-rounded is-small">Ver Activos</a>
                     </td>
-					</tr>
+					 <td>
+                        <a href="index.php?vista=category_update&category_id_up='.$rows['categoria_id'].'" class="button is-success is-rounded is-small">Actualizar</a>
+                    </td>
+                   </tr>
             ';
             $contador++;
 		}

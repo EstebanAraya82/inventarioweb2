@@ -32,8 +32,8 @@
                 <tr class="has-text-centered">
                 	<th>#</th>
                     <th>Posición</th>
-					<th colspan="2">Opciones</th>
-                    </tr>
+					<th>Activos</th>
+					</tr>
             </thead>
             <tbody>
 	';
@@ -47,7 +47,7 @@
 					<td>'.$contador.'</td>
                     <td>'.$rows['posicion_posicion'].'</td>
                     <td>
-                        <a href="index.php?vista=asset_list&position_id='.$rows['posicion_id'].'" class="button is-link is-rounded is-small">Ver equipos</a>
+                        <a href="index.php?vista=asset_list&posicion_id='.$rows['posicion_id'].'" class="button is-link is-rounded is-small">Ver equipos</a>
                     </td>
                     </tr>
             ';

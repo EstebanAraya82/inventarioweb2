@@ -13,7 +13,7 @@ $piso=limpiar_cadena($_POST['activo_piso']);
 $posicion=limpiar_cadena($_POST['activo_posicion']);
 $area=limpiar_cadena($_POST['activo_area']);
 $sector=limpiar_cadena($_POST['activo_sector']);
-$estadoactivo=limpiar_cadena($_POST['activo_estadoactivo']);
+$estadoactivo=limpiar_cadena($_POST['activo_estado']);
 $fecha=limpiar_cadena($_POST['fecha_ingreso']);
 
 
@@ -38,20 +38,20 @@ if(verificar_datos("[0-9]{3,50}", $codigo)){
     exit();
 }
 
-if(verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,50}", $marca)){
-    echo '
+if(verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{2,50}", $marca)){
+echo '
     <div class="notification is-danger is-light">
-    <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
-    Los datos del Sector no corresponden con el formato solicitado
-  </div>';
-    exit();
-}
+   <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
+   Los datos del Sector no corresponden con el formato solicitado
+ </div>';
+     exit();
+ }
 
-if(verificar_datos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]{2,50}", $modelo)){
+if(verificar_datos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{2,50}", $modelo)){
     echo '
     <div class="notification is-danger is-light">
     <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
-    Los datos del Piso no corresponden con el formato solicitado
+    Los datos del Modelo no corresponden con el formato solicitado
   </div>';
     exit();
 }
@@ -186,20 +186,20 @@ if($check_estadoactivo->rowCount()<=0){
 }
 $check_estadoactivo=null;
 
-/*verificar fecha */
-$check_fecha=conexion();
-$check_fecha=$check_fecha->query("SELECT fecha_ingreso From activo where fecha_ingreso='$fecha'");
-if($check_fecha->rowCount()<=0){
-  echo'
-  <div class="notification is-danger is-light">
-  <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
-  la fecha no corresponde
-  </div>
-  ';
-  exit();
+// /*verificar fecha */
+// $check_fecha=conexion();
+// $check_fecha=$check_fecha->query("SELECT fecha_ingreso From activo where fecha_ingreso='$fecha'");
+// if($check_fecha->rowCount()<=0){
+//   echo'
+//   <div class="notification is-danger is-light">
+//   <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
+//   la fecha no corresponde
+//   </div>
+//   ';
+//   exit();
 
-}
-$check_fecha=null;
+// }
+// $check_fecha=null;
 
       
   	/* Guardando datos */

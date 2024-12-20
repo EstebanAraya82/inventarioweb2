@@ -8,17 +8,18 @@ $campos =
  usuario.usuario_apellido,
  usuario.usuario_usuario,
  usuario.usuario_correo,
+ usuario.estadousuario_id,
  usuario.rol_id,
  usuario.area_id,
- usuario.estadousuario_id,
  rol.rol_id,
  rol.rol_nombre,
  area.area_id,
  area.area_nombre,
  estadousuario.estadousuario_id,
  estadousuario.estadousuario_nombre";
+ 
 
-if (isset($busqueda) && $busqueda != "") {
+ if (isset($busqueda) && $busqueda != "") {
 
 	$consulta_datos = "SELECT $campos FROM usuario 
 	INNER JOIN area ON usuario.area_id=area.area_id 
@@ -27,7 +28,6 @@ if (isset($busqueda) && $busqueda != "") {
 	WHERE usuario.usuario_nombre LIKE '%$busqueda%' 
 	OR usuario.usuario_apellido LIKE '%$busqueda%' 
 	OR usuario.usuario_correo LIKE '%$busqueda%' 
-	OR usuario.usuario_estado LIKE '%$busqueda%' 
 	ORDER BY usuario.usuario_usuario ASC LIMIT $inicio,$registros";
 
 	$consulta_total = "SELECT COUNT(usuario_id) FROM usuario WHERE usuario_nombre LIKE '%$busqueda%' OR usuario_usuario LIKE '%$busqueda%'";
@@ -99,6 +99,7 @@ $tabla .= '
                     <th>Estado</th>
                     <th>Área</th>
 					<th>Rol</th>
+					<th colspan="2">Opciones</th>
 					</tr>
             </thead>
             <tbody>

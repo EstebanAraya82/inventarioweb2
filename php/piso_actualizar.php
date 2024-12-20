@@ -40,7 +40,7 @@
 
 
     /* Verificando integridad de los datos */
-    if(verificar_datos("[0-9-]{3,50}",$numero)){
+    if(verificar_datos("[0-9-]{1,50}",$numero)){
         echo '
             <div class="notification is-danger is-light">
                 <strong>¡Lo sentimos, ocurrio un error inesperado!</strong><br>
