@@ -1,0 +1,15 @@
+Medidas de Ejecucion y control de un proyecto
+
+Objetivo:
+° Asegurar y controlar la ejecucion 
+Control de presupuestos
+Gestion de calidad 
+Diseñar
+Crear
+Diseñar Tablas/PA/Triggers autentificacion
+Diseñar Diagramas de Clases
+Redactar Validaciones
+Codificar
+Efectaur pruebas
+Efectuar mantenciones
+Documentar
